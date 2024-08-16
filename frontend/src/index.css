@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-serika_dark-background;
+  @apply text-serika_dark-text;
+}
