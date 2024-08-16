@@ -11,9 +11,9 @@ import TestPage from "./Pages/TestPage";
 const App = () => {
   const router = createHashRouter(
     createRoutesFromElements(
-      <Route path="/monkeytap" element={<MainLayout />}>
+      <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route index path="/monkeytap/test" element={<TestPage />} />
+        <Route path="test" element={<TestPage />} />
       </Route>
     )
   );
