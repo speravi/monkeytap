@@ -1,6 +1,6 @@
 # About
 
-[Monkeytap](speravi.github.io/monkeytap/) is a customizable clicking test. Inspired by [Monkeytype](monkeytype.com)
+[Monkeytap](https://speravi.github.io/monkeytap/) is a customizable clicking test. Inspired by [Monkeytype](https://monkeytype.com/)
 
 # Features
 
