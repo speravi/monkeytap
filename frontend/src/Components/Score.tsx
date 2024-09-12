@@ -1,13 +1,11 @@
-type ScoreProps = {
-  score: number;
-};
-//TODO: why can't i just do
-// score : number
-// wut ?
-const Score = ({ score }: ScoreProps) => {
+import { useGame } from "../GameContext";
+
+const Score = () => {
+  const { state } = useGame();
+
   return (
     <div>
-      <p className="text-xl">{score}</p>
+      <p className="text-xl">{state.score}</p>
     </div>
   );
 };

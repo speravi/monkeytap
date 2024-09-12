@@ -1,53 +1,31 @@
 import { useState, useEffect } from "react";
+import { useGame } from "../GameContext";
 
 type Tile = {
   id: number;
   isActive: boolean;
 };
 
-type LayoutType = "grid" | "rows" | "columns";
-
-type TileGridProps = {
-  gridSize: number;
-  gridTileGap: number;
-  activeTileCount: number;
-  layoutType: LayoutType;
-  gameOver: boolean;
-  gameStarted: boolean;
-  handleGameStarted: () => void;
-  handleScoreIncrement: () => void;
-  handleGameOver: () => void;
-};
-
-const TileGrid = ({
-  gridSize,
-  gridTileGap,
-  activeTileCount,
-  layoutType,
-  gameOver,
-  gameStarted,
-  handleGameStarted,
-  handleScoreIncrement,
-  handleGameOver,
-}: TileGridProps) => {
+const TileGrid = () => {
+  const { state, dispatch } = useGame();
   const [tiles, setTiles] = useState<Tile[]>([]);
 
   useEffect(() => {
     initializeTiles();
-  }, [gridSize, layoutType, activeTileCount]);
+  }, [state.gridSize, state.layoutType, state.activeTileCount]);
 
   const initializeTiles = () => {
     const tileCount =
-      layoutType === "grid"
-        ? gridSize * gridSize
-        : layoutType === "columns"
-        ? gridSize
-        : gridSize;
+      state.layoutType === "grid"
+        ? state.gridSize * state.gridSize
+        : state.layoutType === "columns"
+        ? state.gridSize
+        : state.gridSize;
     const initialTiles = Array.from({ length: tileCount }, (_, index) => ({
       id: index,
       isActive: false,
     }));
-    setRandomActiveTiles(initialTiles, activeTileCount);
+    setRandomActiveTiles(initialTiles, state.activeTileCount);
   };
 
   const setRandomActiveTiles = (
@@ -74,27 +52,29 @@ const TileGrid = ({
   };
 
   const handleTileMouseDown = (id: number) => {
-    if (gameOver) return;
-    if (!gameStarted) handleGameStarted();
+    if (state.gameOver) return;
+    if (!state.gameStarted) {
+      dispatch({ type: "START_GAME" });
+    }
 
     const clickedTile = tiles.find((tile) => tile.id === id);
     if (clickedTile && clickedTile.isActive) {
-      handleScoreIncrement();
+      dispatch({ type: "ADD_SCORE", payload: 1 });
       const newTiles = tiles.map((tile) =>
         tile.id === id ? { ...tile, isActive: false } : tile
       );
       setRandomActiveTiles(newTiles, 1, id);
     } else {
-      handleGameOver();
+      dispatch({ type: "END_GAME" });
     }
   };
 
   const getGridStyle = (): React.CSSProperties => {
-    switch (layoutType) {
+    switch (state.layoutType) {
       case "grid":
         return {
           display: "grid",
-          gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
+          gridTemplateColumns: `repeat(${state.gridSize}, 1fr)`,
           aspectRatio: "1 / 1",
         };
       case "rows":
@@ -103,6 +83,7 @@ const TileGrid = ({
           aspectRatio: "1 / 1",
         };
       case "columns":
+        1;
         return {
           display: "flex",
           flexDirection: "row",
@@ -117,9 +98,9 @@ const TileGrid = ({
     <div className="w-full max-w-xl mx-auto">
       <div
         className={`${
-          layoutType === "columns" ? "flex flex-col" : "grid"
+          state.layoutType === "columns" ? "flex flex-col" : "grid"
         } p-2 bg-serika_dark-elementBg rounded-md`}
-        style={{ ...getGridStyle(), gap: `${gridTileGap}px` }}
+        style={{ ...getGridStyle(), gap: `${state.gridTileGap}px` }}
       >
         {tiles.map((tile) => (
           <button
@@ -129,11 +110,11 @@ const TileGrid = ({
                  tile.isActive
                    ? "bg-serika_dark-active"
                    : "bg-serika_dark-inactive"
-               } ${gameOver ? "cursor-not-allowed" : "cursor-pointer"} ${
-              layoutType === "columns" ? "flex-1" : ""
+               } ${state.gameOver ? "cursor-not-allowed" : "cursor-pointer"} ${
+              state.layoutType === "columns" ? "flex-1" : ""
             }`}
             onMouseDown={() => handleTileMouseDown(tile.id)}
-            disabled={gameOver}
+            disabled={state.gameOver}
           ></button>
         ))}
       </div>

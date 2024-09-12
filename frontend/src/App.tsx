@@ -7,6 +7,7 @@ import {
 import MainLayout from "./Layouts/MainLayout";
 import HomePage from "./Pages/HomePage";
 import TestPage from "./Pages/TestPage";
+import { GameProvider } from "./GameContext";
 
 const App = () => {
   const router = createHashRouter(
@@ -17,7 +18,11 @@ const App = () => {
       </Route>
     )
   );
-  return <RouterProvider router={router} />;
+  return (
+    <GameProvider>
+      <RouterProvider router={router} />
+    </GameProvider>
+  );
 };
 
 export default App;
