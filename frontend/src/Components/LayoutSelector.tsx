@@ -1,20 +1,17 @@
-import { SetStateAction } from "react";
+import { useGame } from "../GameContext";
 
-type LayoutSelectorProps = {
-  layoutType: string;
-  setLayoutType: (layout: SetStateAction<"grid" | "rows" | "columns">) => void;
-};
-
-const LayoutSelector = ({ layoutType, setLayoutType }: LayoutSelectorProps) => {
+const LayoutSelector = () => {
+  const { state, dispatch } = useGame();
   const layouts: ("grid" | "rows" | "columns")[] = ["grid", "rows", "columns"];
+
   return (
     <>
       {layouts.map((layout) => (
         <button
           key={layout}
-          onClick={() => setLayoutType(layout)}
+          onClick={() => dispatch({ type: "SET_LAYOUT_TYPE", payload: layout })}
           className={`px-3 rounded-md transition-colors hover:text-serika_dark-text ${
-            layoutType === layout
+            state.layoutType === layout
               ? "text-serika_dark-active"
               : "text-serika_dark-inactive "
           }`}

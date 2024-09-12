@@ -1,48 +1,40 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useGame } from "../GameContext";
 
-type TimerProps = {
-  timerDuration: number;
-  gameStarted: boolean;
-  gameOver: boolean;
-  timeLeft: number;
-  setTimeLeft: React.Dispatch<React.SetStateAction<number>>;
-  onTimerExpire: () => void;
-};
-const Timer = ({
-  timerDuration,
-  gameStarted,
-  gameOver,
-  timeLeft,
-  onTimerExpire,
-  setTimeLeft,
-}: TimerProps) => {
+// TODO: yes
+const Timer = () => {
+  const { state, dispatch } = useGame();
+
+  const decrementTimer = useCallback(() => {
+    console.log(state.timeLeft);
+    dispatch({ type: "SET_TIME_LEFT", payload: state.timeLeft - 1 });
+    if (state.timeLeft > 0) {
+      return;
+    } else {
+      console.log("TIMER IS OVER");
+      dispatch({ type: "SET_TIMER_EXPIRED", payload: true });
+      dispatch({ type: "END_GAME" });
+    }
+  }, [state.timeLeft, dispatch]);
+
   useEffect(() => {
-    setTimeLeft(timerDuration);
-  }, [timerDuration]);
+    dispatch({ type: "SET_TIMER_DURATION", payload: state.timerDuration });
+  }, [state.timerDuration]);
 
   useEffect(() => {
     let timer: number | undefined;
-    if (gameStarted && timerDuration > 0 && !gameOver) {
-      timer = window.setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            window.clearInterval(timer);
-            onTimerExpire();
-            return 0;
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
+    if (state.gameStarted && !state.gameOver && state.timeLeft > 0) {
+      timer = window.setInterval(decrementTimer, 1000);
     }
 
     return () => {
       if (timer !== undefined) window.clearInterval(timer);
     };
-  }, [timerDuration, gameStarted]);
+  }, [state.gameStarted, state.gameOver, state.timeLeft, decrementTimer]);
 
   return (
     <div>
-      <p className="text-xl">{timeLeft}</p>
+      <p className="text-xl">{state.timeLeft}</p>
     </div>
   );
 };
