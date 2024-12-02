@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import TileGrid from "../Components/TileGrid";
 import GridSizeSelector from "../Components/Config/GridSizeSelector";
 import LayoutSelector from "../Components/Config/LayoutSelector";

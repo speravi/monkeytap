@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from "react";
-import { useGame } from "../GameContext";
 
 type CustomNumberModalProps = {
   isVisible: boolean;
@@ -20,7 +19,6 @@ const CustomNumberModal = ({
   maxValue,
   initialInputValue = minValue,
 }: CustomNumberModalProps) => {
-  const { state } = useGame();
   const [inputValue, setInputValue] = useState(initialInputValue.toString());
 
   const handleCustomSizeChange = useCallback(

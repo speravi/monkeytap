@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useGame } from "../GameContext";
 
 const Timer = () => {
