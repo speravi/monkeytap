@@ -4,9 +4,12 @@ const PlayAgainOverlay = () => {
   const { state, dispatch } = useGame();
 
   return (
-    <div className="absolute inset-0 bg-gradient-to-r from-serika_dark-background/50 via-serika_dark-elementBg/70 to-serika_dark-background/50 flex items-center justify-center">
-      <div className=" bg-serika_dark-elementBg p-6 rounded-md text-center">
-        <div className="flex gap-x-64 text-serika_dark-text ">
+    // TODO: Colors (gradient)
+    <div
+      className={`absolute inset-0 bg-gradient-to-r from-background/50 via-elementBg/70 to-background/50 flex items-center justify-center`}
+    >
+      <div className={`bg-elementBg p-6 rounded-md text-center text-text`}>
+        <div className="flex gap-x-64 text-text ">
           <p className="">best Score: {state.bestScore}</p>
           <p className="">score: {state.score}</p>
         </div>
@@ -21,7 +24,7 @@ const PlayAgainOverlay = () => {
           </ul>
         </div>
         <button
-          className="px-6 py-4 text-serika_dark-active hover:text-serika_dark-text transition-colors text-xl"
+          className={`px-6 py-4 text-active hover:text-text transition-colors text-xl`}
           onClick={() => {
             dispatch({ type: "RESET_GAME" });
           }}

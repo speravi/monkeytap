@@ -99,20 +99,16 @@ const TileGrid = () => {
       <div
         className={`${
           state.layoutType === "columns" ? "flex flex-col" : "grid"
-        } p-2 bg-serika_dark-elementBg rounded-md`}
+        } p-2 bg-elementBg rounded-md`}
         style={{ ...getGridStyle(), gap: `${state.gridTileGap}px` }}
       >
         {tiles.map((tile) => (
           <button
             key={tile.id}
             className={`w-full h-full transition-colors rounded-md cursor-default 
-               ${
-                 tile.isActive
-                   ? "bg-serika_dark-active"
-                   : "bg-serika_dark-inactive"
-               } ${state.gameOver ? "cursor-not-allowed" : "cursor-pointer"} ${
-              state.layoutType === "columns" ? "flex-1" : ""
-            }`}
+               ${tile.isActive ? `bg-active` : `bg-inactive`} ${
+              state.gameOver ? "cursor-not-allowed" : "cursor-pointer"
+            } ${state.layoutType === "columns" ? "flex-1" : ""}`}
             onMouseDown={() => handleTileMouseDown(tile.id)}
             disabled={state.gameOver}
           ></button>
