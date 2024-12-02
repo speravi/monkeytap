@@ -5,9 +5,11 @@
 const Footer = () => {
   return (
     <footer className="py-6 bottom-0 w-full">
-      <div className="text-serika_dark-inactive flex flex-col sm:flex-row justify-between items-center container mx-auto px-10">
+      <div
+        className={`text-inactive flex flex-col sm:flex-row justify-between items-center container mx-auto px-10`}
+      >
         <div className="flex items-center space-x-4 ">
-          <div className="hover:text-serika_dark-text hover:font-bold">
+          <div className={`hover:text-text hover:font-bold`}>
             {"</> "}
             <a href="https://github.com/speravi" target="_blank">
               github
@@ -17,7 +19,7 @@ const Footer = () => {
         <div className="flex items-center space-x-4">
           <div>inspired by</div>
           <a
-            className="text-serika_dark-text hover:font-bold"
+            className={`text-text hover:font-bold`}
             href="https://monkeytype.com"
             target="_blank"
           >

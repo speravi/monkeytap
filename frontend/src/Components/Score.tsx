@@ -5,7 +5,7 @@ const Score = () => {
 
   return (
     <div>
-      <p className="text-xl">{state.score}</p>
+      <p className="text-xl text-text">{state.score}</p>
     </div>
   );
 };

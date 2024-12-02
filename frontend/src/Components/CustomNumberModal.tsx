@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { useGame } from "../GameContext";
 
 type CustomNumberModalProps = {
   isVisible: boolean;
@@ -19,6 +20,7 @@ const CustomNumberModal = ({
   maxValue,
   initialInputValue = minValue,
 }: CustomNumberModalProps) => {
+  const { state } = useGame();
   const [inputValue, setInputValue] = useState(initialInputValue.toString());
 
   const handleCustomSizeChange = useCallback(
@@ -54,29 +56,27 @@ const CustomNumberModal = ({
       onClick={onClose}
     >
       <div
-        className="bg-serika_dark-background p-6 rounded-lg shadow-lg border-2 border-serika_dark-elementBg"
+        className={`bg-background p-6 rounded-lg shadow-lg border-2 border-elementBg`}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-xl mb-4 text-serika_dark-inactive">{title}</h2>
+        <h2 className={`text-xl mb-4 text-inactive`}>{title}</h2>
 
         <input
-          className="w-full px-3 py-2 mb-4 bg-serika_dark-elementBg text-serika_dark-text border rounded-md border-none focus:outline-none focus:outline-serika_dark-text"
+          className={`w-full px-3 py-2 mb-4 bg-elementBg text-text border rounded-md border-none focus:outline-none focus:outline-text`}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onWheel={handleScroll}
           min={minValue}
           max={maxValue}
         />
-        <p className="text-serika_dark-text">
+        <p className={`text-text`}>
           Enter a value between {minValue} and {maxValue}.
         </p>
-        <p className="text-xs text-serika_dark-text">
-          Tip: Try using the scroll wheel!
-        </p>
+        <p className={`text-xs text-text`}>Tip: Try using the scroll wheel!</p>
         <div className="mt-5">
           <button
             onClick={handleSubmit}
-            className="px-3 py-2 rounded-md w-full bg-serika_dark-elementBg text-serika_dark-text hover:bg-opacity-90 transition-colors"
+            className={`px-3 py-2 rounded-md w-full bg-elementBg text-text hover:bg-opacity-90 transition-colors`}
           >
             OK
           </button>

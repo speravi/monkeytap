@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import CustomNumberModal from "./CustomNumberModal";
-import { useGame } from "../GameContext";
+import CustomNumberModal from "../CustomNumberModal";
+import { useGame } from "../../GameContext";
 
+// TODO: I don't like these here
 const tileCounts = [1, 3, 5];
 const MIN_TILES = 1;
 const MAX_TILES = 20;
@@ -24,10 +25,10 @@ const ActiveTileCountSelector = () => {
             dispatch({ type: "SET_ACTIVE_TILE_COUNT", payload: count });
             setIsCustomCount(false);
           }}
-          className={`px-3 rounded-md hover:text-serika_dark-text transition-colors ${
+          className={`px-3 rounded-md hover:text-text transition-colors ${
             state.activeTileCount === count && !isCustomCount
-              ? "text-serika_dark-active"
-              : "text-serika_dark-inactive"
+              ? `text-active`
+              : `text-inactive`
           }`}
         >
           {count}
@@ -35,10 +36,8 @@ const ActiveTileCountSelector = () => {
       ))}
       <button
         onClick={() => setShowModal(true)}
-        className={`px-3 rounded-md bg-serika_dark-elementBg hover:text-serika_dark-text transition-colors ${
-          isCustomCount
-            ? "text-serika_dark-active"
-            : "text-serika_dark-inactive"
+        className={`px-3 rounded-md bg-elementBg hover:text-text transition-colors ${
+          isCustomCount ? `text-active` : `text-inactive`
         }`}
       >
         custom

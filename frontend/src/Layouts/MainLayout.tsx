@@ -4,7 +4,9 @@ import Footer from "../Components/Footer";
 
 const MainLayout = () => {
   return (
-    <div className="container min-h-screen relative flex flex-col justify-between">
+    <div
+      className={`container min-h-screen relative flex flex-col justify-between`}
+    >
       <div>
         <Navbar />
         <Outlet />

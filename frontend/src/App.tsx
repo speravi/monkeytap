@@ -8,6 +8,7 @@ import MainLayout from "./Layouts/MainLayout";
 import HomePage from "./Pages/HomePage";
 import TestPage from "./Pages/TestPage";
 import { GameProvider } from "./GameContext";
+import SettingsPage from "./Pages/SettingsPage";
 
 const App = () => {
   const router = createHashRouter(
@@ -15,13 +16,16 @@ const App = () => {
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="test" element={<TestPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
     )
   );
   return (
-    <GameProvider>
-      <RouterProvider router={router} />
-    </GameProvider>
+    <div className="bg-background text-text">
+      <GameProvider>
+        <RouterProvider router={router} />
+      </GameProvider>
+    </div>
   );
 };
 

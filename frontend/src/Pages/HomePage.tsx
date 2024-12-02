@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import TileGrid from "../Components/TileGrid";
-import GridSizeSelector from "../Components/GridSizeSelector";
-import LayoutSelector from "../Components/LayoutSelector";
+import GridSizeSelector from "../Components/Config/GridSizeSelector";
+import LayoutSelector from "../Components/Config/LayoutSelector";
 import Spacer from "../Components/Spacer";
 import PlayAgainOverlay from "../Components/PlayAgainOverlay";
-import ActiveTileCountSelector from "../Components/ActiveTileCountSelector";
-import GridTileGapSelector from "../Components/GridTileGapSelector";
+import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelector";
+import GridTileGapSelector from "../Components/Config/GridTileGapSelector";
 import Score from "../Components/Score";
 import Timer from "../Components/Timer";
-import TimerSelector from "../Components/TimerSelector";
+import TimerSelector from "../Components/Config/TimerSelector";
 import { useGame } from "../GameContext";
 
 const HomePage = () => {
@@ -28,27 +28,13 @@ const HomePage = () => {
     state.layoutType,
     state.timerDuration,
   ]);
-
-  // useEffect(() => {
-  //   if (state.timerExpired && state.gameStarted && !state.gameOver) {
-  //     handleGameOver();
-  //   }
-  // }, [state.timerExpired]);
-
-  // const handleGameOver = () => {
-  //   dispatch({ type: "SET_TIME_LEFT", payload: 0 });
-  //   dispatch({ type: "END_GAME" });
-  //   dispatch({ type: "SET_TIME_LEFT", payload: 0 });
-  //   dispatch({ type: "SET_TIMER_EXPIRED", payload: true });
-  // };
-
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* config */}
       <div
-        className="
-        bg-serika_dark-elementBg rounded-md text-sm flex mb-2 p-2 flex-col
-      "
+        className={`
+          bg-elementBg rounded-md text-sm flex mb-2 p-2 flex-col
+        `}
       >
         <div className="pb-5">
           <div className="flex justify-center">
@@ -61,16 +47,14 @@ const HomePage = () => {
         </div>
         <div className="flex justify-center content-center md:flex-row flex-col ">
           <div>
-            <div className="flex justify-center text-serika_dark-inactive">
-              Timer
-            </div>
+            <div className={`flex justify-center text-inactive`}>Timer</div>
             <div className="flex justify-center">
               <TimerSelector />
             </div>
           </div>
           <Spacer />
           <div>
-            <div className="flex justify-center text-serika_dark-inactive">
+            <div className={`flex justify-center text-inactive`}>
               Active tile count
             </div>
             <div className="flex justify-center">
@@ -79,7 +63,7 @@ const HomePage = () => {
           </div>
           <Spacer />
           <div>
-            <div className="flex justify-center text-serika_dark-inactive">
+            <div className={`flex justify-center text-inactive`}>
               Grid tile gap
             </div>
             <div className="flex justify-center">

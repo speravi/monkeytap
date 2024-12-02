@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import CustomNumberModal from "./CustomNumberModal";
-import { useGame } from "../GameContext";
+import CustomNumberModal from "../CustomNumberModal";
+import { useGame } from "../../GameContext";
 
 const gapOptions = [1, 3, 6];
 const MIN_GAP = 1;
@@ -25,10 +25,10 @@ const GridTileGapSelector = () => {
             dispatch({ type: "SET_GRID_TILE_GAP", payload: gap });
             setIsCustomGap(false);
           }}
-          className={`px-3 rounded-md hover:text-serika_dark-text transition-colors ${
+          className={`px-3 rounded-md hover:text-text transition-colors ${
             state.gridTileGap === gap && !isCustomGap
-              ? "text-serika_dark-active"
-              : "text-serika_dark-inactive"
+              ? `text-active`
+              : `text-inactive`
           }`}
         >
           {gap}px
@@ -36,8 +36,8 @@ const GridTileGapSelector = () => {
       ))}
       <button
         onClick={() => setShowModal(true)}
-        className={`px-3 rounded-md bg-serika_dark-elementBg hover:text-serika_dark-text transition-colors ${
-          isCustomGap ? "text-serika_dark-active" : "text-serika_dark-inactive"
+        className={`px-3 rounded-md bg-elementBg hover:text-text transition-colors ${
+          isCustomGap ? `text-active` : `text-inactive`
         }`}
       >
         custom

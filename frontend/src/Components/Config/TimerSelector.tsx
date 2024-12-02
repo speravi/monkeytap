@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
-import CustomNumberModal from "./CustomNumberModal";
-import { useGame } from "../GameContext";
+import CustomNumberModal from "../CustomNumberModal";
+import { useGame } from "../../GameContext";
 
-type TimerSelectorProps = {
-  timerDuration: number;
-  onTimerDurationChange: (duration: number) => void;
-};
-
-const timerOptions = [15, 30, 60]; // Predefined timer options in seconds
+const timerOptions = [15, 30, 60];
 const MIN_TIMER = 0; // 0 for unlimited
-const MAX_TIMER = 3600; // 1 hour max for example
+const MAX_TIMER = 3600;
 
 const TimerSelector = () => {
   const { state, dispatch } = useGame();
@@ -30,10 +25,10 @@ const TimerSelector = () => {
             dispatch({ type: "SET_TIMER_DURATION", payload: duration });
             setIsCustomTimer(false);
           }}
-          className={`px-3 rounded-md hover:text-serika_dark-text transition-colors ${
+          className={`px-3 rounded-md hover:text-text transition-colors ${
             state.timerDuration === duration && !isCustomTimer
-              ? "text-serika_dark-active"
-              : "text-serika_dark-inactive"
+              ? `text-active`
+              : `text-inactive`
           }`}
         >
           {duration}s
@@ -41,10 +36,8 @@ const TimerSelector = () => {
       ))}
       <button
         onClick={() => setShowModal(true)}
-        className={`px-3 rounded-md bg-serika_dark-elementBg hover:text-serika_dark-text transition-colors ${
-          isCustomTimer
-            ? "text-serika_dark-active"
-            : "text-serika_dark-inactive"
+        className={`px-3 rounded-md bg-elementBg hover:text-text transition-colors ${
+          isCustomTimer ? `text-active` : `text-inactive`
         }`}
       >
         Custom

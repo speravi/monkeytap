@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import CustomNumberModal from "./CustomNumberModal";
-import { useGame } from "../GameContext";
+import CustomNumberModal from "../CustomNumberModal";
+import { useGame } from "../../GameContext";
 
 const gridSizes = [3, 4, 5];
 const MIN_SIZE = 2;
@@ -29,10 +29,10 @@ const GridSizeSelector = () => {
             setIsCustomSize(false);
             setCustomSize("");
           }}
-          className={`px-3 rounded-md hover:text-serika_dark-text transition-colors ${
+          className={`px-3 rounded-md hover:text-text transition-colors ${
             state.gridSize === size && !isCustomSize
-              ? "text-serika_dark-active"
-              : "text-serika_dark-inactive"
+              ? `text-active`
+              : `text-inactive`
           }`}
         >
           {size}x{size}
@@ -40,8 +40,8 @@ const GridSizeSelector = () => {
       ))}
       <button
         onClick={() => setShowModal(true)}
-        className={`px-3 hover:text-serika_dark-text transition-colors ${
-          isCustomSize ? "text-serika_dark-active" : "text-serika_dark-inactive"
+        className={`px-3 hover:text-text transition-colors ${
+          isCustomSize ? `text-active` : `text-inactive`
         }`}
       >
         custom

@@ -1,40 +1,58 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useGame } from "../GameContext";
 
-// TODO: yes
 const Timer = () => {
   const { state, dispatch } = useGame();
 
-  const decrementTimer = useCallback(() => {
-    console.log(state.timeLeft);
-    dispatch({ type: "SET_TIME_LEFT", payload: state.timeLeft - 1 });
-    if (state.timeLeft > 0) {
-      return;
-    } else {
-      console.log("TIMER IS OVER");
-      dispatch({ type: "SET_TIMER_EXPIRED", payload: true });
+  useEffect(() => {
+    if (state.timerDuration === 0) return;
+
+    if (state.timeLeft <= 0 && state.gameStarted && !state.gameOver) {
       dispatch({ type: "END_GAME" });
     }
-  }, [state.timeLeft, dispatch]);
+  }, [
+    state.timeLeft,
+    state.gameStarted,
+    state.gameOver,
+    dispatch,
+    state.timerDuration,
+  ]);
 
   useEffect(() => {
-    dispatch({ type: "SET_TIMER_DURATION", payload: state.timerDuration });
-  }, [state.timerDuration]);
+    if (state.gameStarted && !state.gameOver && state.timerDuration > 0) {
+      dispatch({ type: "SET_TIME_LEFT", payload: state.timerDuration });
+    }
+  }, [state.gameStarted, state.gameOver, state.timerDuration, dispatch]);
 
   useEffect(() => {
+    if (state.timerDuration === 0) return;
+
     let timer: number | undefined;
+
     if (state.gameStarted && !state.gameOver && state.timeLeft > 0) {
-      timer = window.setInterval(decrementTimer, 1000);
+      timer = window.setInterval(() => {
+        dispatch({ type: "SET_TIME_LEFT", payload: state.timeLeft - 1 });
+      }, 1000);
     }
 
     return () => {
-      if (timer !== undefined) window.clearInterval(timer);
+      if (timer !== undefined) {
+        window.clearInterval(timer);
+      }
     };
-  }, [state.gameStarted, state.gameOver, state.timeLeft, decrementTimer]);
+  }, [
+    state.gameStarted,
+    state.gameOver,
+    state.timeLeft,
+    dispatch,
+    state.timerDuration,
+  ]);
 
   return (
     <div>
-      <p className="text-xl">{state.timeLeft}</p>
+      <p className="text-xl text-text">
+        {state.timerDuration === 0 ? " " : state.timeLeft}
+      </p>
     </div>
   );
 };

@@ -2,7 +2,148 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-serika_dark-background;
-  @apply text-serika_dark-text;
+/* TODO: would be nice to have seperate files for each theme */
+@layer base {
+  html {
+    --color-text: #d1d0c5;
+    --color-background: #323437;
+    --color-elementBg: #2c2e31;
+    --color-active: #d1b71c;
+    --color-inactive: #636669;
+  }
+
+  html[data-theme="forest_whisper"] {
+    --color-text: #e3e7dc;
+    --color-background: #1e2c2b;
+    --color-elementBg: #30443e;
+    --color-active: #b8e986;
+    --color-inactive: #4b6455;
+  }
+
+  html[data-theme="ocean_breeze"] {
+    --color-text: #e0faff;
+    --color-background: #012d47;
+    --color-elementBg: #014963;
+    --color-active: #00d4ff;
+    --color-inactive: #516e80;
+  }
+
+  html[data-theme="sunset_glow"] {
+    --color-text: #ffedd5;
+    --color-background: #4a171b;
+    --color-elementBg: #652427;
+    --color-active: #ff6b3b;
+    --color-inactive: #8e575a;
+  }
+
+  html[data-theme="electric_dreams"] {
+    --color-text: #f4faff;
+    --color-background: #140f2a;
+    --color-elementBg: #1d1442;
+    --color-active: #ff00f6;
+    --color-inactive: #5a4984;
+  }
+  html[data-theme="fiery_dusk"] {
+    --color-text: #ffe4cc;
+    --color-background: #2a0f0f;
+    --color-elementBg: #451818;
+    --color-active: #ff4500;
+    --color-inactive: #733939;
+  }
+
+  html[data-theme="neon_night"] {
+    --color-text: #e5ffe5;
+    --color-background: #000a13;
+    --color-elementBg: #001e26;
+    --color-active: #00ff7f;
+    --color-inactive: #005c42;
+  }
+
+  html[data-theme="black_white"] {
+    --color-text: #ffffff;
+    --color-background: #000000;
+    --color-elementBg: #1a1a1a;
+    --color-active: #ffffff;
+    --color-inactive: #000000;
+  }
+
+  html[data-theme="berry_burst"] {
+    --color-text: #fff3f8;
+    --color-background: #230013;
+    --color-elementBg: #36001f;
+    --color-active: #ff338f;
+    --color-inactive: #80445c;
+  }
+
+  html[data-theme="solar_flare"] {
+    --color-text: #fffbf3;
+    --color-background: #3a2600;
+    --color-elementBg: #5b3d00;
+    --color-active: #ffc700;
+    --color-inactive: #7f5d2a;
+  }
+
+  html[data-theme="arctic_twilight"] {
+    --color-text: #e3faff;
+    --color-background: #002933;
+    --color-elementBg: #004d59;
+    --color-active: hsl(185, 100%, 89%);
+    --color-inactive: #377f8a;
+  }
+
+  html[data-theme="lava_lands"] {
+    --color-text: #ffecd2;
+    --color-background: #301204;
+    --color-elementBg: #200900;
+    --color-active: #ff0000;
+    --color-inactive: #360c00;
+  }
+
+  html[data-theme="cosmic_wave"] {
+    --color-text: #e4eaff;
+    --color-background: #0e0039;
+    --color-elementBg: #200075;
+    --color-active: #9b59ff;
+    --color-inactive: #594780;
+  }
+
+  html[data-theme="autumn_rust"] {
+    --color-text: #fff8e6;
+    --color-background: #3a210b;
+    --color-elementBg: #573615;
+    --color-active: #e67e22;
+    --color-inactive: #805840;
+  }
+
+  html[data-theme="candy_crush"] {
+    --color-text: #fffbff;
+    --color-background: #ffc8de;
+    --color-elementBg: #7c298f;
+    --color-active: #ee35ae;
+    --color-inactive: #d3b1ff;
+  }
+
+  /* html[data-theme="candy_crush"] {
+    --color-text: #fffbff;
+    --color-background: #250034;
+    --color-elementBg: #450055;
+    --color-active: #ff007a;
+    --color-inactive: #7a3a64;
+  } */
+
+  html[data-theme="jade_silk"] {
+    --color-text: #e8fff2;
+    --color-background: #003824;
+    --color-elementBg: #005b37;
+    --color-active: #00e676;
+    --color-inactive: #12241c;
+  }
+
+  html[data-theme="amber_glow"] {
+    --color-text: #fffae6;
+    --color-background: #3f2100;
+    --color-elementBg: #5a2f00;
+    --color-active: #ffa500;
+    --color-inactive: #805d38;
+  }
 }
