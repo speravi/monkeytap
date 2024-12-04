@@ -50,7 +50,7 @@ const Timer = () => {
 
   return (
     <div>
-      <p className="text-xl text-text">
+      <p className="text-xl text-active">
         {state.timerDuration === 0 ? " " : state.timeLeft}
       </p>
     </div>
