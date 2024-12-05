@@ -1,5 +1,5 @@
-import { useState } from "react";
 import { changeTheme } from "../../utils/ThemeSwitcher";
+import { useGame } from "../../GameContext";
 
 // TODO: this is stupid but u know what to do
 const THEMES = [
@@ -23,11 +23,12 @@ const THEMES = [
 ];
 
 const ThemeSelector = () => {
-  const [activeTheme, setActiveTheme] = useState("");
+  const { state, dispatch } = useGame();
+  const { activeTheme } = state;
 
   const handleThemeChange = (themeId: string) => {
+    dispatch({ type: "SET_ACTIVE_THEME", payload: themeId });
     changeTheme(themeId);
-    setActiveTheme(themeId);
   };
 
   return (
