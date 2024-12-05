@@ -11,6 +11,7 @@ type GameState = {
   gridTileGap: number;
   activeTileCount: number;
   layoutType: LayoutTypes;
+  activeTheme: string;
   // timer
   timerDuration: number;
   timeLeft: number;
@@ -32,6 +33,8 @@ type GameAction =
   | { type: "SET_GRID_TILE_GAP"; payload: number }
   | { type: "SET_ACTIVE_TILE_COUNT"; payload: number }
   | { type: "SET_LAYOUT_TYPE"; payload: LayoutTypes }
+  | { type: "SET_ACTIVE_THEME"; payload: string }
+  // timer
   | { type: "SET_TIMER_DURATION"; payload: number }
   | { type: "SET_TIME_LEFT"; payload: number }
   // handling scores
@@ -49,6 +52,8 @@ const initialState: GameState = {
   gridTileGap: 3,
   activeTileCount: 3,
   layoutType: "grid",
+  activeTheme: "",
+  // timer
   timerDuration: 15,
   timeLeft: 15,
   // scores
@@ -87,6 +92,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, activeTileCount: action.payload };
     case "SET_LAYOUT_TYPE":
       return { ...state, layoutType: action.payload };
+    case "SET_ACTIVE_THEME":
+      return { ...state, activeTheme: action.payload };
     // time ticking
     case "SET_TIMER_DURATION":
       return {
