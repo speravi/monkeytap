@@ -1,107 +1,50 @@
+import { useState } from "react";
 import { changeTheme } from "../../utils/ThemeSwitcher";
 
+// TODO: this is stupid but u know what to do
+const THEMES = [
+  { id: "", name: "Serika Dark" },
+  { id: "forest_whisper", name: "Forest Whisper" },
+  { id: "ocean_breeze", name: "Ocean Breeze" },
+  { id: "sunset_glow", name: "Sunset Glow" },
+  { id: "electric_dreams", name: "Electric Dreams" },
+  { id: "fiery_dusk", name: "Fiery Dusk" },
+  { id: "neon_night", name: "Neon Night" },
+  { id: "black_white", name: "Black White" },
+  { id: "berry_burst", name: "Berry Burst" },
+  { id: "solar_flare", name: "Solar Flare" },
+  { id: "arctic_twilight", name: "Arctic Twilight" },
+  { id: "lava_lands", name: "Lava Lands" },
+  { id: "cosmic_wave", name: "Cosmic Wave" },
+  { id: "autumn_rust", name: "Autumn Rust" },
+  { id: "candy_crush", name: "Candy Crush" },
+  { id: "jade_silk", name: "Jade Silk" },
+  { id: "amber_glow", name: "Amber Glow" },
+];
+
 const ThemeSelector = () => {
+  const [activeTheme, setActiveTheme] = useState("");
+
+  const handleThemeChange = (themeId: string) => {
+    changeTheme(themeId);
+    setActiveTheme(themeId);
+  };
+
   return (
-    <div className="flex flex-wrap space-x-2">
-      <button className="px-3 py-1 rounded" onClick={() => changeTheme("")}>
-        Serika Dark
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("forest_whisper")}
-      >
-        Forest Whisper
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("ocean_breeze")}
-      >
-        Ocean Breeze
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("sunset_glow")}
-      >
-        Sunset Glow
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("electric_dreams")}
-      >
-        Electric Dreams
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("fiery_dusk")}
-      >
-        Fiery Dusk
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("neon_night")}
-      >
-        Neon Night
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("black_white")}
-      >
-        Black White
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("berry_burst")}
-      >
-        Berry Burst
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("solar_flare")}
-      >
-        Solar Flare
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("arctic_twilight")}
-      >
-        Arctic Twilight
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("lava_lands")}
-      >
-        Lava Lands
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("cosmic_wave")}
-      >
-        Cosmic Wave
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("autumn_rust")}
-      >
-        Autumn Rust
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("candy_crush")}
-      >
-        Candy Crush
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("jade_silk")}
-      >
-        Jade Silk
-      </button>
-      <button
-        className="px-3 py-1 rounded"
-        onClick={() => changeTheme("amber_glow")}
-      >
-        Amber Glow
-      </button>
+    <div className="flex flex-wrap gap-2">
+      {THEMES.map(({ id, name }) => (
+        <button
+          key={id}
+          className={`px-3 py-1 rounded transition-colors ${
+            activeTheme === id
+              ? "text-[var(--color-active)]"
+              : "text-[var(--color-inactive)]"
+          }`}
+          onClick={() => handleThemeChange(id)}
+        >
+          {name}
+        </button>
+      ))}
     </div>
   );
 };
