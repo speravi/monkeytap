@@ -69,6 +69,16 @@ const TileGrid = () => {
     }
   };
 
+  const handleGridClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (state.gameOver || !state.gapsCountAsFail) return;
+    if (e.currentTarget === e.target) {
+      if (!state.gameStarted) {
+        dispatch({ type: "START_GAME" });
+      }
+      dispatch({ type: "END_GAME" });
+    }
+  };
+
   const getGridStyle = (): React.CSSProperties => {
     switch (state.layoutType) {
       case "grid":
@@ -101,6 +111,7 @@ const TileGrid = () => {
           state.layoutType === "columns" ? "flex flex-col" : "grid"
         } p-2 bg-elementBg rounded-md`}
         style={{ ...getGridStyle(), gap: `${state.gridTileGap}px` }}
+        onClick={handleGridClick}
       >
         {tiles.map((tile) => (
           <button
@@ -109,7 +120,10 @@ const TileGrid = () => {
                ${tile.isActive ? `bg-active` : `bg-inactive`} ${
               state.gameOver ? "cursor-not-allowed" : "cursor-pointer"
             } ${state.layoutType === "columns" ? "flex-1" : ""}`}
-            onMouseDown={() => handleTileMouseDown(tile.id)}
+            onMouseDown={(e) => {
+              e.stopPropagation(); // Prevent the grid click handler from firing
+              handleTileMouseDown(tile.id);
+            }}
             disabled={state.gameOver}
           ></button>
         ))}
