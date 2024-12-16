@@ -209,11 +209,3 @@ export const THEMES: Theme[] = [
     },
   },
 ];
-
-// html[data-theme="midnight_frost"] {
-//   --color-text: #d9d9d9;
-//   --color-background: #212534;
-//   --color-elementBg: #3f455a;
-//   --color-active: #f1f5ff;
-//   --color-inactive: #72788b;
-// }
