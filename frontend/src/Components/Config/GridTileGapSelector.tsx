@@ -36,7 +36,7 @@ const GridTileGapSelector = () => {
       ))}
       <button
         onClick={() => setShowModal(true)}
-        className={`px-3 rounded-md bg-elementBg hover:text-text transition-colors ${
+        className={`px-3 rounded-md hover:text-text transition-colors ${
           isCustomGap ? `text-active` : `text-inactive`
         }`}
       >
