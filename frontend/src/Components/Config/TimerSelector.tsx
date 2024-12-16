@@ -40,7 +40,7 @@ const TimerSelector = () => {
           isCustomTimer ? `text-active` : `text-inactive`
         }`}
       >
-        Custom
+        custom
       </button>
 
       <CustomNumberModal
