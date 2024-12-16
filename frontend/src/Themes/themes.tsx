@@ -88,14 +88,14 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "black_white",
-    name: "Black White",
+    id: "achromatopsia",
+    name: "Achromatopsia",
     colors: {
-      text: "#ffffff",
-      background: "#000000",
-      elementBg: "#1a1a1a",
-      active: "#ffffff",
-      inactive: "#000000",
+      text: "#ebebeb",
+      background: "#1e1e1e",
+      elementBg: "#373737",
+      active: "#ebebeb",
+      inactive: "#6b6b6b",
     },
   },
   {
@@ -127,7 +127,7 @@ export const THEMES: Theme[] = [
       text: "#e3faff",
       background: "#002933",
       elementBg: "#004d59",
-      active: "#e6fbff", // Converted from hsl(185, 100%, 89%)
+      active: "#e6fbff",
       inactive: "#377f8a",
     },
   },
@@ -197,4 +197,23 @@ export const THEMES: Theme[] = [
       inactive: "#805d38",
     },
   },
+  {
+    id: "midnight_frost",
+    name: " Midnight Frost",
+    colors: {
+      text: "#d9d9d9",
+      background: "#212534",
+      elementBg: "#3f455a",
+      active: "#f1f5ff",
+      inactive: "#72788b",
+    },
+  },
 ];
+
+// html[data-theme="midnight_frost"] {
+//   --color-text: #d9d9d9;
+//   --color-background: #212534;
+//   --color-elementBg: #3f455a;
+//   --color-active: #f1f5ff;
+//   --color-inactive: #72788b;
+// }
