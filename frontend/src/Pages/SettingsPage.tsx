@@ -2,6 +2,7 @@ import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelecto
 import GridSizeSelector from "../Components/Config/GridSizeSelector";
 import GridTileGapSelector from "../Components/Config/GridTileGapSelector";
 import LayoutSelector from "../Components/Config/LayoutSelector";
+import RegisterGapClickToggle from "../Components/Config/RegisterGapClickToggle";
 import ThemeSelector from "../Components/Config/ThemeSelector";
 import TimerSelector from "../Components/Config/TimerSelector";
 
@@ -29,6 +30,10 @@ const SettingsPage = () => {
         <div className="mb-4">
           <h2 className="text-xl mb-2">Grid Tile Gap</h2>
           <GridTileGapSelector />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl mb-2">Gaps Count As Fail</h2>
+          <RegisterGapClickToggle />
         </div>
         <div className="mb-4">
           <h2 className="text-xl mb-2">Theme</h2>
