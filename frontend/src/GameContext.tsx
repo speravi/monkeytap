@@ -83,6 +83,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
   switch (action.type) {
     case "RESET_TO_DEFAULT":
+      changeTheme(initialState.activeTheme);
       return saveAndReturn({ ...initialState, bestScore: state.bestScore });
     // game state change
     case "RESET_GAME":
@@ -159,7 +160,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ? { ...initial, ...JSON.parse(stored) }
       : initial;
 
-    // Apply the saved theme on initial load
+    // TODO: i dont like this here i think
     if (loadedState.activeTheme) {
       changeTheme(loadedState.activeTheme);
     }
