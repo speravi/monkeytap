@@ -165,8 +165,8 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "candy_crush",
-    name: "Candy Crush",
+    id: "ogre_dream",
+    name: "Ogre Dream",
     colors: {
       text: "#f0ead2",
       background: "#6c584c",
