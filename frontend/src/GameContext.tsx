@@ -28,7 +28,6 @@ type GameAction =
   | { type: "START_GAME" }
   | { type: "END_GAME" }
   | { type: "RESET_GAME" }
-  // | { type: "SET_TIMER_EXPIRED"; payload: boolean }
   // changing config
   | { type: "SET_GRID_SIZE"; payload: number }
   | { type: "SET_GRID_TILE_GAP"; payload: number }
@@ -80,7 +79,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "START_GAME":
       return { ...state, gameStarted: true };
     case "END_GAME":
-      console.log("GameContext: END_GAME");
       return {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
