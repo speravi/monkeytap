@@ -132,14 +132,14 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "lava_lands",
-    name: "Lava Lands",
+    id: "team_fortress_2",
+    name: "Team Fortress 2",
     colors: {
-      text: "#ffecd2",
-      background: "#301204",
-      elementBg: "#200900",
-      active: "#ff0000",
-      inactive: "#360c00",
+      text: "#EBEBEB",
+      background: "#373737",
+      elementBg: "#6B6B6B",
+      active: "#EF7122",
+      inactive: "#C3B9A1",
     },
   },
   {
@@ -168,11 +168,11 @@ export const THEMES: Theme[] = [
     id: "candy_crush",
     name: "Candy Crush",
     colors: {
-      text: "#fffbff",
-      background: "#ffc8de",
-      elementBg: "#7c298f",
-      active: "#ee35ae",
-      inactive: "#d3b1ff",
+      text: "#f0ead2",
+      background: "#6c584c",
+      elementBg: "#a98467",
+      active: "#c4d200",
+      inactive: "#dde5b6",
     },
   },
   {

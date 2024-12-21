@@ -87,16 +87,16 @@
     --color-text: #e3faff;
     --color-background: #002933;
     --color-elementBg: #004d59;
-    --color-active: hsl(185, 100%, 89%);
+    --color-active: #e6fbff;
     --color-inactive: #377f8a;
   }
 
-  html[data-theme="lava_lands"] {
+  html[data-theme="team_fortress_2"] {
     --color-text: #ffecd2;
-    --color-background: #301204;
-    --color-elementBg: #200900;
-    --color-active: #ff0000;
-    --color-inactive: #360c00;
+    --color-background: #373737;
+    --color-elementBg: #6b6b6b;
+    --color-active: #ef7122;
+    --color-inactive: #c3b9a1;
   }
 
   html[data-theme="cosmic_wave"] {
@@ -116,11 +116,11 @@
   }
 
   html[data-theme="candy_crush"] {
-    --color-text: #fffbff;
-    --color-background: #ffc8de;
-    --color-elementBg: #7c298f;
-    --color-active: #ee35ae;
-    --color-inactive: #d3b1ff;
+    --color-text: #f0ead2;
+    --color-background: #6c584c;
+    --color-elementBg: #a98467;
+    --color-active: #c4d200;
+    --color-inactive: #dde5b6;
   }
 
   html[data-theme="jade_silk"] {
