@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
-
-const STORAGE_KEY = "gameConfig";
-
-// Separate config-only state type for storage
-type GameConfig = Omit<
-  GameState,
-  | "gameStarted"
-  | "gameOver"
-  | "timerExpired"
-  | "timeLeft"
-  | "score"
-  | "lastFiveScores"
->;
-
-const getStoredConfig = (): GameConfig | null => {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : null;
-};
+import { changeTheme } from "./utils/ThemeSwitcher";
 
 export type LayoutTypes = "grid" | "rows" | "columns";
 
@@ -171,8 +154,17 @@ const GameContext = createContext<
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState, (initial) => {
-    const storedConfig = getStoredConfig();
-    return storedConfig ? { ...initial, ...storedConfig } : initial;
+    const stored = localStorage.getItem("gameConfig");
+    const loadedState = stored
+      ? { ...initial, ...JSON.parse(stored) }
+      : initial;
+
+    // Apply the saved theme on initial load
+    if (loadedState.activeTheme) {
+      changeTheme(loadedState.activeTheme);
+    }
+
+    return loadedState;
   });
   return (
     <GameContext.Provider value={{ state, dispatch }}>
