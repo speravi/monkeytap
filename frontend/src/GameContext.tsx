@@ -1,5 +1,23 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 
+const STORAGE_KEY = "gameConfig";
+
+// Separate config-only state type for storage
+type GameConfig = Omit<
+  GameState,
+  | "gameStarted"
+  | "gameOver"
+  | "timerExpired"
+  | "timeLeft"
+  | "score"
+  | "lastFiveScores"
+>;
+
+const getStoredConfig = (): GameConfig | null => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored ? JSON.parse(stored) : null;
+};
+
 export type LayoutTypes = "grid" | "rows" | "columns";
 
 type GameState = {
@@ -24,6 +42,7 @@ type GameState = {
 };
 
 type GameAction =
+  | { type: "RESET_TO_DEFAULT" }
   // changing game states
   | { type: "START_GAME" }
   | { type: "END_GAME" }
@@ -65,7 +84,23 @@ const initialState: GameState = {
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
+  const saveAndReturn = (newState: GameState) => {
+    const {
+      gameStarted,
+      gameOver,
+      timerExpired,
+      timeLeft,
+      score,
+      lastFiveScores,
+      ...config
+    } = newState;
+    localStorage.setItem("gameConfig", JSON.stringify(config));
+    return newState;
+  };
+
   switch (action.type) {
+    case "RESET_TO_DEFAULT":
+      return saveAndReturn({ ...initialState, bestScore: state.bestScore });
     // game state change
     case "RESET_GAME":
       return {
@@ -86,27 +121,28 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
     // config change
     case "SET_GRID_SIZE":
-      return { ...state, gridSize: action.payload };
+      return saveAndReturn({ ...state, gridSize: action.payload });
     case "SET_GRID_TILE_GAP":
-      return { ...state, gridTileGap: action.payload };
+      return saveAndReturn({ ...state, gridTileGap: action.payload });
     case "SET_ACTIVE_TILE_COUNT":
-      return { ...state, activeTileCount: action.payload };
+      return saveAndReturn({ ...state, activeTileCount: action.payload });
     case "SET_LAYOUT_TYPE":
-      return { ...state, layoutType: action.payload };
+      return saveAndReturn({ ...state, layoutType: action.payload });
     case "SET_ACTIVE_THEME":
-      return { ...state, activeTheme: action.payload };
+      return saveAndReturn({ ...state, activeTheme: action.payload });
     case "SET_GAPS_COUNT_AS_FAIL":
-      return { ...state, gapsCountAsFail: action.payload };
-    // time ticking
+      return saveAndReturn({ ...state, gapsCountAsFail: action.payload });
     case "SET_TIMER_DURATION":
-      return {
+      return saveAndReturn({
         ...state,
         timerDuration: action.payload,
         timeLeft: action.payload,
-      };
+      });
+
+    // timer & scores
     case "SET_TIME_LEFT":
       return { ...state, timeLeft: action.payload };
-    // scores
+
     case "SET_SCORE":
       return { ...state, score: action.payload };
 
@@ -134,7 +170,10 @@ const GameContext = createContext<
 >(undefined);
 
 export function GameProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(gameReducer, initialState);
+  const [state, dispatch] = useReducer(gameReducer, initialState, (initial) => {
+    const storedConfig = getStoredConfig();
+    return storedConfig ? { ...initial, ...storedConfig } : initial;
+  });
   return (
     <GameContext.Provider value={{ state, dispatch }}>
       {children}
