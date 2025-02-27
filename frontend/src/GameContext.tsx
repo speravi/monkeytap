@@ -12,6 +12,7 @@ type GameState = {
   gridTileGap: number;
   activeTileCount: number;
   layoutType: LayoutTypes;
+  gameMode: "continuous" | "batch";
   activeTheme: string;
   gapsCountAsFail: boolean;
   // timer
@@ -35,6 +36,7 @@ type GameAction =
   | { type: "SET_GRID_TILE_GAP"; payload: number }
   | { type: "SET_ACTIVE_TILE_COUNT"; payload: number }
   | { type: "SET_LAYOUT_TYPE"; payload: LayoutTypes }
+  | { type: "SET_GAME_MODE"; payload: "continuous" | "batch" }
   | { type: "SET_ACTIVE_THEME"; payload: string }
   | { type: "SET_GAPS_COUNT_AS_FAIL"; payload: boolean }
   // timer
@@ -55,6 +57,7 @@ const initialState: GameState = {
   gridTileGap: 3,
   activeTileCount: 3,
   layoutType: "grid",
+  gameMode: "continuous",
   activeTheme: "",
   gapsCountAsFail: false,
   // timer
@@ -112,6 +115,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return saveAndReturn({ ...state, activeTileCount: action.payload });
     case "SET_LAYOUT_TYPE":
       return saveAndReturn({ ...state, layoutType: action.payload });
+    case "SET_GAME_MODE":
+      return saveAndReturn({ ...state, gameMode: action.payload });
     case "SET_ACTIVE_THEME":
       return saveAndReturn({ ...state, activeTheme: action.payload });
     case "SET_GAPS_COUNT_AS_FAIL":
