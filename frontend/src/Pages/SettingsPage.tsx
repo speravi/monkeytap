@@ -1,4 +1,5 @@
 import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelector";
+import GameModeSelector from "../Components/Config/GameModeSelector";
 import GridSizeSelector from "../Components/Config/GridSizeSelector";
 import GridTileGapSelector from "../Components/Config/GridTileGapSelector";
 import LayoutSelector from "../Components/Config/LayoutSelector";
@@ -38,6 +39,10 @@ const SettingsPage = () => {
         <div className="mb-4">
           <h2 className="text-xl mb-2">Gaps Count As Fail</h2>
           <RegisterGapClickToggle />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl mb-2">Game Mode</h2>
+          <GameModeSelector />
         </div>
         <div className="mb-4">
           <h2 className="text-xl mb-2">Theme</h2>

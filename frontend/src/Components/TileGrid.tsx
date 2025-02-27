@@ -9,6 +9,7 @@ type Tile = {
 const TileGrid = () => {
   const { state, dispatch } = useGame();
   const [tiles, setTiles] = useState<Tile[]>([]);
+  const [activeCount, setActiveCount] = useState(0);
 
   useEffect(() => {
     initializeTiles();
@@ -37,7 +38,7 @@ const TileGrid = () => {
     const inactiveTiles = newTiles.filter(
       (tile) => !tile.isActive && tile.id !== excludeId
     );
-
+    let activatedCount = 0;
     for (let i = 0; i < count; i++) {
       if (inactiveTiles.length > 0) {
         const randomIndex = Math.floor(Math.random() * inactiveTiles.length);
@@ -46,8 +47,10 @@ const TileGrid = () => {
           (tile) => tile.id === selectedTile.id
         );
         newTiles[tileIndex].isActive = true;
+        activatedCount++;
       }
     }
+    setActiveCount(activatedCount);
     setTiles(newTiles);
   };
 
@@ -60,10 +63,22 @@ const TileGrid = () => {
     const clickedTile = tiles.find((tile) => tile.id === id);
     if (clickedTile && clickedTile.isActive) {
       dispatch({ type: "ADD_SCORE", payload: 1 });
+
       const newTiles = tiles.map((tile) =>
         tile.id === id ? { ...tile, isActive: false } : tile
       );
-      setRandomActiveTiles(newTiles, 1, id);
+      const newActiveCount = activeCount - 1;
+      setActiveCount(newActiveCount);
+
+      if (state.gameMode === "continuous") {
+        setRandomActiveTiles(newTiles, 1, id);
+      } else if (state.gameMode === "batch") {
+        if (newActiveCount === 0) {
+          setRandomActiveTiles(newTiles, state.activeTileCount);
+        } else {
+          setTiles(newTiles);
+        }
+      }
     } else {
       dispatch({ type: "END_GAME" });
     }
