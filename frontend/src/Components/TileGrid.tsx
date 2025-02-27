@@ -111,7 +111,7 @@ const TileGrid = () => {
           state.layoutType === "columns" ? "flex flex-col" : "grid"
         } p-2 bg-elementBg rounded-md`}
         style={{ ...getGridStyle(), gap: `${state.gridTileGap}px` }}
-        onClick={handleGridClick}
+        onMouseDown={handleGridClick}
       >
         {tiles.map((tile) => (
           <button
