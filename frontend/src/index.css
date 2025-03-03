@@ -123,6 +123,14 @@
     --color-inactive: #dde5b6;
   }
 
+  /* html[data-theme="mint"] {
+    --color-text: #fffafb;
+    --color-background: #131515;
+    --color-elementBg: #2b2c28;
+    --color-active: #5fffd7;
+    --color-inactive: #bbbea8;
+  } */
+
   html[data-theme="jade_silk"] {
     --color-text: #e8fff2;
     --color-background: #003824;

@@ -4,7 +4,7 @@
 // should be able to see left and right divs through dev tools
 const Footer = () => {
   return (
-    <footer className="py-6 bottom-0 w-full">
+    <footer className="sm:py-6 py-3 bottom-0 w-full">
       <div
         className={`text-inactive flex flex-col sm:flex-row justify-between items-center container mx-auto px-10`}
       >

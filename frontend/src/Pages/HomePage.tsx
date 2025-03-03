@@ -36,7 +36,7 @@ const HomePage = () => {
           bg-elementBg rounded-md text-sm flex mb-2 p-2 flex-col
         `}
       >
-        <div className="pb-5">
+        <div className="lg:pb-5">
           <div className="flex justify-center">
             <LayoutSelector />
           </div>

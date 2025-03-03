@@ -175,6 +175,17 @@ export const THEMES: Theme[] = [
       inactive: "#dde5b6",
     },
   },
+  // {
+  //   id: "mint",
+  //   name: "Mint",
+  //   colors: {
+  //     text: "#fffafb",
+  //     background: "#131515",
+  //     elementBg: "#2b2c28",
+  //     active: "#00f0c7",
+  //     inactive: "#dde5b6",
+  //   },
+  // },
   {
     id: "jade_silk",
     name: "Jade Silk",
