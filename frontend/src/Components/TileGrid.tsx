@@ -61,6 +61,9 @@ const TileGrid = () => {
     }
 
     const clickedTile = tiles.find((tile) => tile.id === id);
+    const currentTime = performance.now();
+    dispatch({ type: "RECORD_CLICK", payload: currentTime });
+
     if (clickedTile && clickedTile.isActive) {
       dispatch({ type: "ADD_SCORE", payload: 1 });
 
@@ -87,6 +90,9 @@ const TileGrid = () => {
   const handleGridClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (state.gameOver || !state.gapsCountAsFail) return;
     if (e.currentTarget === e.target) {
+      // TODO: check if this is needed
+      const currentTime = performance.now();
+      dispatch({ type: "RECORD_CLICK", payload: currentTime });
       if (!state.gameStarted) {
         dispatch({ type: "START_GAME" });
       }

@@ -23,6 +23,9 @@ type GameState = {
   score: number;
   bestScore: number;
   lastFiveScores: number[];
+  // click tracking for CPM graph
+  clickTimes: number[];
+  startTime: number;
 };
 
 type GameAction =
@@ -45,7 +48,9 @@ type GameAction =
   // handling scores
   | { type: "SET_SCORE"; payload: number }
   | { type: "SET_BEST_SCORE"; payload: number }
-  | { type: "ADD_SCORE"; payload: number };
+  | { type: "ADD_SCORE"; payload: number }
+  // click tracking
+  | { type: "RECORD_CLICK"; payload: number };
 
 const initialState: GameState = {
   // game states
@@ -67,6 +72,9 @@ const initialState: GameState = {
   score: 0,
   bestScore: 0,
   lastFiveScores: [],
+  // click tracking
+  clickTimes: [],
+  startTime: 0,
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -97,9 +105,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         gameStarted: false,
         gameOver: false,
         timerExpired: false,
+        clickTimes: [],
+        startTime: 0,
       };
     case "START_GAME":
-      return { ...state, gameStarted: true };
+      return { ...state, gameStarted: true, startTime: performance.now() };
     case "END_GAME":
       return {
         ...state,
@@ -144,6 +154,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         score: newScore,
         bestScore: newBestScore,
+      };
+    case "RECORD_CLICK":
+      return {
+        ...state,
+        clickTimes: [...state.clickTimes, action.payload],
       };
     default:
       return state;
