@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useGame } from "../GameContext";
+import CPMChart from "./CPMChart";
 
 const PlayAgainOverlay = () => {
   const { state, dispatch } = useGame();
@@ -21,11 +22,11 @@ const PlayAgainOverlay = () => {
   }, [dispatch]);
 
   return (
-    <div
-      className={`absolute inset-0 bg-gradient-to-r from-background/50 via-elementBg/70 to-background/50 flex items-center justify-center`}
-    >
-      <div className={`bg-elementBg p-6 rounded-md text-center text-text`}>
-        <div className="flex gap-x-64 text-text">
+    <div className={`absolute inset-0 flex items-center justify-center`}>
+      <div
+        className={`w-[50em] bg-elementBg p-6 rounded-md text-center text-text`}
+      >
+        <div className="flex justify-between text-text">
           <p className="">best Score: {state.bestScore}</p>
           <p className="">score: {state.score}</p>
         </div>
@@ -38,6 +39,9 @@ const PlayAgainOverlay = () => {
               </li>
             ))}
           </ul>
+        </div>
+        <div className="mb-6">
+          <CPMChart />
         </div>
         <button
           className={`px-6 pt-3 text-active hover:text-text transition-colors text-xl`}
