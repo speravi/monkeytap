@@ -26,6 +26,8 @@ type GameState = {
   // click tracking for CPM graph
   clickTimes: number[];
   startTime: number;
+  endTime: number;
+  testDuration: number;
 };
 
 type GameAction =
@@ -75,6 +77,8 @@ const initialState: GameState = {
   // click tracking
   clickTimes: [],
   startTime: 0,
+  endTime: 0,
+  testDuration: 0,
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -111,10 +115,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "START_GAME":
       return { ...state, gameStarted: true, startTime: performance.now() };
     case "END_GAME":
+      const endTime = performance.now();
       return {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
         gameOver: true,
+        endTime,
+        testDuration: Math.floor((endTime - state.startTime) / 1000),
       };
     // config change
     case "SET_GRID_SIZE":
