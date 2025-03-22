@@ -12,7 +12,7 @@ export interface Theme {
 export const THEMES: Theme[] = [
   {
     id: "",
-    name: "Serika Dark",
+    name: "serika dark",
     colors: {
       text: "#d1d0c5",
       background: "#323437",
@@ -23,7 +23,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "forest_whisper",
-    name: "Forest Whisper",
+    name: "forest whisper",
     colors: {
       text: "#e3e7dc",
       background: "#1e2c2b",
@@ -34,7 +34,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "ocean_breeze",
-    name: "Ocean Breeze",
+    name: "ocean breeze",
     colors: {
       text: "#e0faff",
       background: "#012d47",
@@ -45,7 +45,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "sunset_glow",
-    name: "Sunset Glow",
+    name: "sunset glow",
     colors: {
       text: "#ffedd5",
       background: "#4a171b",
@@ -56,7 +56,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "electric_dreams",
-    name: "Electric Dreams",
+    name: "electric dreams",
     colors: {
       text: "#f4faff",
       background: "#140f2a",
@@ -67,7 +67,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "fiery_dusk",
-    name: "Fiery Dusk",
+    name: "fiery dusk",
     colors: {
       text: "#ffe4cc",
       background: "#2a0f0f",
@@ -78,7 +78,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "neon_night",
-    name: "Neon Night",
+    name: "neon night",
     colors: {
       text: "#e5ffe5",
       background: "#000a13",
@@ -89,7 +89,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "achromatopsia",
-    name: "Achromatopsia",
+    name: "achromatopsia",
     colors: {
       text: "#ebebeb",
       background: "#1e1e1e",
@@ -100,7 +100,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "berry_burst",
-    name: "Berry Burst",
+    name: "berry burst",
     colors: {
       text: "#fff3f8",
       background: "#230013",
@@ -111,7 +111,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "solar_flare",
-    name: "Solar Flare",
+    name: "solar flare",
     colors: {
       text: "#fffbf3",
       background: "#3a2600",
@@ -122,7 +122,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "arctic_twilight",
-    name: "Arctic Twilight",
+    name: "arctic twilight",
     colors: {
       text: "#e3faff",
       background: "#002933",
@@ -133,7 +133,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "team_fortress_2",
-    name: "Team Fortress 2",
+    name: "team fortress 2",
     colors: {
       text: "#EBEBEB",
       background: "#373737",
@@ -144,7 +144,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "cosmic_wave",
-    name: "Cosmic Wave",
+    name: "cosmic wave",
     colors: {
       text: "#e4eaff",
       background: "#0e0039",
@@ -155,7 +155,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "autumn_rust",
-    name: "Autumn Rust",
+    name: "autumn rust",
     colors: {
       text: "#fff8e6",
       background: "#3a210b",
@@ -166,7 +166,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "ogre_dream",
-    name: "Ogre Dream",
+    name: "ogre dream",
     colors: {
       text: "#f0ead2",
       background: "#6c584c",
@@ -188,7 +188,7 @@ export const THEMES: Theme[] = [
   // },
   {
     id: "jade_silk",
-    name: "Jade Silk",
+    name: "jade silk",
     colors: {
       text: "#e8fff2",
       background: "#003824",
@@ -199,7 +199,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "amber_glow",
-    name: "Amber Glow",
+    name: "amber glow",
     colors: {
       text: "#fffae6",
       background: "#3f2100",
@@ -210,7 +210,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "midnight_frost",
-    name: " Midnight Frost",
+    name: "midnight frost",
     colors: {
       text: "#d9d9d9",
       background: "#212534",

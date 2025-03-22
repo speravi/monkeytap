@@ -14,38 +14,38 @@ const SettingsPage = () => {
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <h1 className="text-2xl mb-4">Game Settings</h1>
+      <h1 className="text-2xl mb-4">game settings</h1>
       <div className={`bg-elementBg rounded-md p-4`}>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Layout</h2>
+          <h2 className="text-xl mb-2">layout</h2>
           <LayoutSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Grid Size</h2>
+          <h2 className="text-xl mb-2">grid size</h2>
           <GridSizeSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Timer Duration</h2>
+          <h2 className="text-xl mb-2">timer duration</h2>
           <TimerSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Active Tile Count</h2>
+          <h2 className="text-xl mb-2">active tile count</h2>
           <ActiveTileCountSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Grid Tile Gap</h2>
+          <h2 className="text-xl mb-2">grid tile gap</h2>
           <GridTileGapSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Gaps Count As Fail</h2>
+          <h2 className="text-xl mb-2">gaps count as fail</h2>
           <RegisterGapClickToggle />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Game Mode</h2>
+          <h2 className="text-xl mb-2">game mode</h2>
           <GameModeSelector />
         </div>
         <div className="mb-4">
-          <h2 className="text-xl mb-2">Theme</h2>
+          <h2 className="text-xl mb-2">theme</h2>
           <ThemeSelector />
         </div>
         {/* TODO: Create a component? */}
@@ -54,7 +54,7 @@ const SettingsPage = () => {
             onClick={() => dispatch({ type: "RESET_TO_DEFAULT" })}
             className="p-2 bg-red-500 text-white rounded"
           >
-            Reset to Default
+            reset to default
           </button>
         </div>
       </div>

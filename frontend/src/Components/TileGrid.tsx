@@ -90,7 +90,6 @@ const TileGrid = () => {
   const handleGridClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (state.gameOver || !state.gapsCountAsFail) return;
     if (e.currentTarget === e.target) {
-      // TODO: check if this is needed
       const currentTime = performance.now();
       dispatch({ type: "RECORD_CLICK", payload: currentTime });
       if (!state.gameStarted) {

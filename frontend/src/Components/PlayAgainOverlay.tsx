@@ -8,7 +8,7 @@ const PlayAgainOverlay = () => {
   // Add event listener for spacebar to restart game
   useEffect(() => {
     const handleKeyDown = (event: { code: string }) => {
-      if (event.code === "Space") {
+      if (event.code === "Space" || event.code === "Escape") {
         dispatch({ type: "RESET_GAME" });
       }
     };
@@ -51,7 +51,7 @@ const PlayAgainOverlay = () => {
         >
           restart test
         </button>
-        <p className="text-inactive pt-2 text-sm">spacebar to restart</p>
+        <p className="text-inactive pt-2 text-sm">spacebar/esc to restart</p>
       </div>
     </div>
   );

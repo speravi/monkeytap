@@ -53,11 +53,11 @@ const CPMChart = () => {
 
   const chartData = calculateCPMData();
 
-  // No graph for games under 1 sec
-  if (chartData.length === 1) {
+  // No graph for games under 2 sec
+  if (chartData.length < 2) {
     return (
       <div className="text-center text-inactive my-4">
-        No click data available
+        game too short to display CPM graph
       </div>
     );
   }
@@ -81,7 +81,7 @@ const CPMChart = () => {
   return (
     <div className="w-full">
       <div className="text-center mb-2">
-        <span className="text-md text-active">Average CPM: {averageCPM}</span>
+        <span className="text-md text-active">average CPM: {averageCPM}</span>
       </div>
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -93,14 +93,14 @@ const CPMChart = () => {
             <XAxis
               dataKey="second"
               label={{
-                value: "Seconds",
+                value: "seconds",
                 position: "insideBottomRight",
                 offset: -5,
               }}
             />
             <YAxis
               label={{
-                value: "Clicks per minute",
+                value: "clicks per minute",
                 angle: -90,
                 position: "insideTopleft",
                 padding: 30,
@@ -111,7 +111,7 @@ const CPMChart = () => {
             <Tooltip
               formatter={(value: number) => [
                 `${value} CPM`,
-                "Clicks per Minute",
+                "clicks per Minute",
               ]}
               labelFormatter={(label: number) => `Second ${label}`}
               contentStyle={{
