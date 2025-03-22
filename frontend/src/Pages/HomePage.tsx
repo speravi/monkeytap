@@ -47,7 +47,7 @@ const HomePage = () => {
         </div>
         <div className="flex justify-center content-center md:flex-row flex-col ">
           <div>
-            <div className={`flex justify-center text-inactive`}>Timer</div>
+            <div className={`flex justify-center text-inactive`}>timer</div>
             <div className="flex justify-center">
               <TimerSelector />
             </div>
@@ -55,7 +55,7 @@ const HomePage = () => {
           <Spacer />
           <div>
             <div className={`flex justify-center text-inactive`}>
-              Active tile count
+              active tile count
             </div>
             <div className="flex justify-center">
               <ActiveTileCountSelector />
@@ -64,7 +64,7 @@ const HomePage = () => {
           <Spacer />
           <div>
             <div className={`flex justify-center text-inactive`}>
-              Grid tile gap
+              grid tile gap
             </div>
             <div className="flex justify-center">
               <GridTileGapSelector />
