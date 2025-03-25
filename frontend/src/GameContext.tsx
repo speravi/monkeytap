@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
 import { changeTheme } from "./utils/ThemeSwitcher";
 
 export type LayoutTypes = "grid" | "rows" | "columns";
@@ -28,6 +34,8 @@ type GameState = {
   startTime: number;
   endTime: number;
   testDuration: number;
+  // game history
+  gameHistory: GameHistoryRecord[];
 };
 
 type GameAction =
@@ -52,7 +60,9 @@ type GameAction =
   | { type: "SET_BEST_SCORE"; payload: number }
   | { type: "ADD_SCORE"; payload: number }
   // click tracking
-  | { type: "RECORD_CLICK"; payload: number };
+  | { type: "RECORD_CLICK"; payload: number }
+  // game history
+  | { type: "SAVE_GAME_HISTORY"; payload: GameHistoryRecord };
 
 const initialState: GameState = {
   // game states
@@ -79,27 +89,35 @@ const initialState: GameState = {
   startTime: 0,
   endTime: 0,
   testDuration: 0,
+  // game history
+  gameHistory: [],
+};
+
+type GameHistoryRecord = {
+  id: string;
+  date: number;
+  score: number;
+  cpm: number;
+  chartData: {
+    second: number;
+    cpm: number;
+  }[];
+  // Game configuration
+  layoutType: LayoutTypes;
+  gridSize: number;
+  timerDuration: number;
+  testDuration: number;
+  activeTileCount: number;
+  gridTileGap: number;
+  gapsCountAsFail: boolean;
+  gameMode: "continuous" | "batch";
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {
-  const saveAndReturn = (newState: GameState) => {
-    const {
-      gameStarted,
-      gameOver,
-      timerExpired,
-      timeLeft,
-      score,
-      lastFiveScores,
-      ...config
-    } = newState;
-    localStorage.setItem("gameConfig", JSON.stringify(config));
-    return newState;
-  };
-
   switch (action.type) {
     case "RESET_TO_DEFAULT":
       changeTheme(initialState.activeTheme);
-      return saveAndReturn({ ...initialState, bestScore: state.bestScore });
+      return { ...initialState, bestScore: state.bestScore };
     // game state change
     case "RESET_GAME":
       return {
@@ -116,6 +134,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, gameStarted: true, startTime: performance.now() };
     case "END_GAME":
       const endTime = performance.now();
+
       return {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
@@ -125,25 +144,25 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
     // config change
     case "SET_GRID_SIZE":
-      return saveAndReturn({ ...state, gridSize: action.payload });
+      return { ...state, gridSize: action.payload };
     case "SET_GRID_TILE_GAP":
-      return saveAndReturn({ ...state, gridTileGap: action.payload });
+      return { ...state, gridTileGap: action.payload };
     case "SET_ACTIVE_TILE_COUNT":
-      return saveAndReturn({ ...state, activeTileCount: action.payload });
+      return { ...state, activeTileCount: action.payload };
     case "SET_LAYOUT_TYPE":
-      return saveAndReturn({ ...state, layoutType: action.payload });
+      return { ...state, layoutType: action.payload };
     case "SET_GAME_MODE":
-      return saveAndReturn({ ...state, gameMode: action.payload });
+      return { ...state, gameMode: action.payload };
     case "SET_ACTIVE_THEME":
-      return saveAndReturn({ ...state, activeTheme: action.payload });
+      return { ...state, activeTheme: action.payload };
     case "SET_GAPS_COUNT_AS_FAIL":
-      return saveAndReturn({ ...state, gapsCountAsFail: action.payload });
+      return { ...state, gapsCountAsFail: action.payload };
     case "SET_TIMER_DURATION":
-      return saveAndReturn({
+      return {
         ...state,
         timerDuration: action.payload,
         timeLeft: action.payload,
-      });
+      };
 
     // timer & scores
     case "SET_TIME_LEFT":
@@ -194,6 +213,29 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     return loadedState;
   });
+
+  useEffect(() => {
+    const {
+      gameStarted,
+      gameOver,
+      timerExpired,
+      timeLeft,
+      score,
+      lastFiveScores,
+      ...config
+    } = state;
+    localStorage.setItem("gameConfig", JSON.stringify(config));
+  }, [
+    state.gridSize,
+    state.gridTileGap,
+    state.activeTileCount,
+    state.layoutType,
+    state.gameMode,
+    state.activeTheme,
+    state.gapsCountAsFail,
+    state.timerDuration,
+  ]);
+
   return (
     <GameContext.Provider value={{ state, dispatch }}>
       {children}
