@@ -8,53 +8,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useGame } from "../GameContext";
-
-type DataPoint = {
-  second: number;
-  cpm: number;
-};
+import { calculateAverageCPM, calculateCPMData } from "../utils/CPMCalculator";
 
 const CPMChart = () => {
   const { state } = useGame();
 
-  const calculateCPMData = (): DataPoint[] => {
-    if (!state.startTime || state.clickTimes.length === 0) {
-      return [];
-    }
-
-    const clicksPerSecond: Record<number, number> = {};
-
-    for (let i = 1; i <= state.testDuration; i++) {
-      clicksPerSecond[i] = 0;
-    }
-
-    // Count clicks for each completed second
-    state.clickTimes.forEach((time) => {
-      // Calculate which second this click belongs to
-      const secondsSinceStart = Math.ceil((time - state.startTime) / 1000);
-
-      // Only count clicks that occurred during complete seconds
-      if (secondsSinceStart >= 1 && secondsSinceStart <= state.testDuration) {
-        clicksPerSecond[secondsSinceStart] =
-          (clicksPerSecond[secondsSinceStart] || 0) + 1;
-      }
-    });
-
-    // Convert to CPM data points
-    const data: DataPoint[] = Object.entries(clicksPerSecond).map(
-      ([second, clicks]) => ({
-        second: parseInt(second, 10),
-        cpm: clicks * 60, // Convert clicks per second to clicks per minute
-      })
-    );
-
-    return data.sort((a, b) => a.second - b.second);
-  };
-
-  const chartData = calculateCPMData();
-
   // No graph for games under 2 sec
-  if (chartData.length < 2) {
+  if (state.testDuration < 2) {
     return (
       <div className="text-center text-inactive my-4">
         game too short to display CPM graph
@@ -62,21 +22,19 @@ const CPMChart = () => {
     );
   }
 
-  // Calculate average CPM
-  // subtract one click if test ended before timer runs out or timer was infinite
-  var validClicksCount = state.clickTimes.length;
-  if (state.testDuration < state.timerDuration || state.timerDuration === 0) {
-    validClicksCount = state.clickTimes.length - 1;
-  }
-
-  const totalGameDurationSeconds = Math.round(
-    (state.endTime - state.startTime) / 1000
+  const chartData = calculateCPMData(
+    state.clickTimes,
+    state.startTime,
+    state.testDuration
   );
 
-  const averageCPM =
-    totalGameDurationSeconds > 0
-      ? Math.round((validClicksCount / totalGameDurationSeconds) * 60)
-      : 0;
+  const averageCPM = calculateAverageCPM(
+    state.clickTimes,
+    state.startTime,
+    state.endTime,
+    state.testDuration,
+    state.timerDuration
+  );
 
   return (
     <div className="w-full">
