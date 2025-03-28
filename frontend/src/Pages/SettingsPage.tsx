@@ -48,7 +48,6 @@ const SettingsPage = () => {
           <h2 className="text-xl mb-2">theme</h2>
           <ThemeSelector />
         </div>
-        {/* TODO: Create a component? */}
         <div className="mb-4">
           <button
             onClick={() => dispatch({ type: "RESET_TO_DEFAULT" })}

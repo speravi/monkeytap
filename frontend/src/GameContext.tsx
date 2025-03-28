@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import { changeTheme } from "./utils/ThemeSwitcher";
+import { calculateAverageCPM, calculateCPMData } from "./utils/CPMCalculator";
 
 export type LayoutTypes = "grid" | "rows" | "columns";
 
@@ -62,7 +63,8 @@ type GameAction =
   // click tracking
   | { type: "RECORD_CLICK"; payload: number }
   // game history
-  | { type: "SAVE_GAME_HISTORY"; payload: GameHistoryRecord };
+  | { type: "SAVE_GAME_HISTORY"; payload: GameHistoryRecord }
+  | { type: "CLEAR_GAME_HISTORY" };
 
 const initialState: GameState = {
   // game states
@@ -134,14 +136,47 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, gameStarted: true, startTime: performance.now() };
     case "END_GAME":
       const endTime = performance.now();
+      const testDuration = Math.floor((endTime - state.startTime) / 1000);
+
+      //TODO: not pretty...
+      const historyRecord: GameHistoryRecord = {
+        id: crypto.randomUUID(),
+        date: Date.now(),
+        score: state.score,
+        cpm: calculateAverageCPM(
+          state.clickTimes,
+          state.startTime,
+          endTime,
+          testDuration,
+          state.timerDuration
+        ),
+        chartData: calculateCPMData(
+          state.clickTimes,
+          state.startTime,
+          testDuration
+        ),
+        layoutType: state.layoutType,
+        gridSize: state.gridSize,
+        timerDuration: state.timerDuration,
+        testDuration,
+        activeTileCount: state.activeTileCount,
+        gridTileGap: state.gridTileGap,
+        gapsCountAsFail: state.gapsCountAsFail,
+        gameMode: state.gameMode,
+      };
 
       return {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
         gameOver: true,
         endTime,
-        testDuration: Math.floor((endTime - state.startTime) / 1000),
+        testDuration,
+        gameHistory: [historyRecord, ...state.gameHistory].slice(0, 50),
       };
+
+    case "CLEAR_GAME_HISTORY":
+      return { ...state, gameHistory: [] };
+
     // config change
     case "SET_GRID_SIZE":
       return { ...state, gridSize: action.payload };
@@ -201,30 +236,22 @@ const GameContext = createContext<
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState, (initial) => {
-    const stored = localStorage.getItem("gameConfig");
-    const loadedState = stored
-      ? { ...initial, ...JSON.parse(stored) }
+    const storedConfig = localStorage.getItem("gameConfig");
+    const storedHistory = localStorage.getItem("gameHistory");
+    const loadedState = storedConfig
+      ? { ...initial, ...JSON.parse(storedConfig) }
       : initial;
 
-    // TODO: i dont like this here i think
-    if (loadedState.activeTheme) {
-      changeTheme(loadedState.activeTheme);
-    }
-
-    return loadedState;
+    return {
+      ...loadedState,
+      gameHistory: storedHistory ? JSON.parse(storedHistory) : [],
+    };
   });
 
   useEffect(() => {
-    const {
-      gameStarted,
-      gameOver,
-      timerExpired,
-      timeLeft,
-      score,
-      lastFiveScores,
-      ...config
-    } = state;
+    const { gameHistory, ...config } = state;
     localStorage.setItem("gameConfig", JSON.stringify(config));
+    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
   }, [
     state.gridSize,
     state.gridTileGap,
@@ -234,6 +261,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     state.activeTheme,
     state.gapsCountAsFail,
     state.timerDuration,
+    state.gameHistory,
   ]);
 
   return (

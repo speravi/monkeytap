@@ -10,7 +10,15 @@ import {
 import { useGame } from "../GameContext";
 import { calculateAverageCPM, calculateCPMData } from "../utils/CPMCalculator";
 
-const CPMChart = () => {
+type CPMChartProps = {
+  chartData?: { second: number; cpm: number }[];
+  averageCPM?: number;
+};
+
+const CPMChart = ({
+  chartData: propChartData,
+  averageCPM: propAverageCPM,
+}: CPMChartProps) => {
   const { state } = useGame();
 
   // No graph for games under 2 sec
@@ -22,13 +30,13 @@ const CPMChart = () => {
     );
   }
 
-  const chartData = calculateCPMData(
+  const internalChartData = calculateCPMData(
     state.clickTimes,
     state.startTime,
     state.testDuration
   );
 
-  const averageCPM = calculateAverageCPM(
+  const internalAverageCPM = calculateAverageCPM(
     state.clickTimes,
     state.startTime,
     state.endTime,
@@ -36,6 +44,10 @@ const CPMChart = () => {
     state.timerDuration
   );
 
+  // TODO: ewww, think of a better way to do this
+  const chartData = propChartData || internalChartData;
+  const averageCPM = propAverageCPM ?? internalAverageCPM;
+  console.log(`\n\n${chartData}\n\n`);
   return (
     <div className="w-full">
       <div className="text-center mb-2">
