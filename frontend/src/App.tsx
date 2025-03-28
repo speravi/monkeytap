@@ -9,6 +9,7 @@ import HomePage from "./Pages/HomePage";
 import TestPage from "./Pages/TestPage";
 import { GameProvider } from "./GameContext";
 import SettingsPage from "./Pages/SettingsPage";
+import GameHistoryPage from "./Pages/GameHistoryPage";
 
 const App = () => {
   const router = createHashRouter(
@@ -17,6 +18,7 @@ const App = () => {
         <Route index element={<HomePage />} />
         <Route path="test" element={<TestPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="history" element={<GameHistoryPage />} />
       </Route>
     )
   );
