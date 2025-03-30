@@ -155,3 +155,12 @@
     --color-inactive: #72788b;
   }
 }
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-elementBg) var(--color-background);
+}
+
+html {
+  overflow-y: scroll;
+}
