@@ -24,7 +24,7 @@ const CPMChart = ({
   // No graph for games under 2 sec
   if (state.testDuration < 2) {
     return (
-      <div className="text-center text-inactive my-4">
+      <div className="text-center text-inactive">
         game too short to display CPM graph
       </div>
     );
@@ -50,9 +50,9 @@ const CPMChart = ({
   console.log(`\n\n${chartData}\n\n`);
   return (
     <div className="w-full">
-      <div className="text-center mb-2">
+      {/* <div className="text-center mb-2">
         <span className="text-md text-active">average CPM: {averageCPM}</span>
-      </div>
+      </div> */}
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
