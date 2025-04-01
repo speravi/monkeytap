@@ -77,10 +77,7 @@ const GameHistoryPage = () => {
                       <td colSpan={7} className="p-4">
                         <div className="mb-4">
                           {game.testDuration > 2 ? (
-                            <CPMChart
-                              chartData={game.chartData}
-                              averageCPM={game.cpm}
-                            />
+                            <CPMChart chartData={game.chartData} />
                           ) : (
                             <div className="text-center text-inactive my-4">
                               game too short to display CPM graph
