@@ -34,7 +34,7 @@ const PlayAgainOverlay = () => {
             <p className="text-inactive text-left">
               cpm
               <br />
-              <span className="text-5xl text-active">420</span>
+              <span className="text-5xl text-active">{state.avgCPM}</span>
             </p>
             <p className="text-inactive text-left">
               score

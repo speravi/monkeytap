@@ -29,6 +29,7 @@ type GameState = {
   // scores
   score: number;
   bestScore: number;
+  avgCPM: number;
   lastFiveScores: number[];
   // click tracking for CPM graph
   clickTimes: number[];
@@ -85,6 +86,7 @@ const initialState: GameState = {
   // scores
   score: 0,
   bestScore: 0,
+  avgCPM: 0,
   lastFiveScores: [],
   // click tracking
   clickTimes: [],
@@ -137,19 +139,19 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "END_GAME":
       const endTime = performance.now();
       const testDuration = Math.floor((endTime - state.startTime) / 1000);
-
-      //TODO: not pretty...
+      // stinky ugly ew ew
+      const avgCPM = calculateAverageCPM(
+        state.clickTimes,
+        state.startTime,
+        endTime,
+        testDuration,
+        state.timerDuration
+      );
       const historyRecord: GameHistoryRecord = {
         id: crypto.randomUUID(),
         date: Date.now(),
         score: state.score,
-        cpm: calculateAverageCPM(
-          state.clickTimes,
-          state.startTime,
-          endTime,
-          testDuration,
-          state.timerDuration
-        ),
+        cpm: avgCPM,
         chartData: calculateCPMData(
           state.clickTimes,
           state.startTime,
@@ -169,6 +171,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
         gameOver: true,
+        avgCPM,
         endTime,
         testDuration,
         gameHistory: [historyRecord, ...state.gameHistory].slice(0, 50),
