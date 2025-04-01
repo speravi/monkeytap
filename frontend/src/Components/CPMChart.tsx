@@ -8,17 +8,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useGame } from "../GameContext";
-import { calculateAverageCPM, calculateCPMData } from "../utils/CPMCalculator";
+import { calculateCPMData } from "../utils/CPMCalculator";
 
 type CPMChartProps = {
   chartData?: { second: number; cpm: number }[];
-  averageCPM?: number;
 };
 
-const CPMChart = ({
-  chartData: propChartData,
-  averageCPM: propAverageCPM,
-}: CPMChartProps) => {
+const CPMChart = ({ chartData: propChartData }: CPMChartProps) => {
   const { state } = useGame();
 
   // No graph for games under 2 sec
@@ -30,29 +26,17 @@ const CPMChart = ({
     );
   }
 
+  // TODO: ewww, think of a better way to do this
   const internalChartData = calculateCPMData(
     state.clickTimes,
     state.startTime,
     state.testDuration
   );
-
-  const internalAverageCPM = calculateAverageCPM(
-    state.clickTimes,
-    state.startTime,
-    state.endTime,
-    state.testDuration,
-    state.timerDuration
-  );
-
-  // TODO: ewww, think of a better way to do this
   const chartData = propChartData || internalChartData;
-  const averageCPM = propAverageCPM ?? internalAverageCPM;
+
   console.log(`\n\n${chartData}\n\n`);
   return (
     <div className="w-full">
-      {/* <div className="text-center mb-2">
-        <span className="text-md text-active">average CPM: {averageCPM}</span>
-      </div> */}
       <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
