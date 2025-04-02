@@ -66,14 +66,14 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "fiery_dusk",
-    name: "fiery dusk",
+    id: "watermelon",
+    name: "watermelon",
     colors: {
-      text: "#ffe4cc",
-      background: "#2a0f0f",
-      elementBg: "#451818",
-      active: "#ff4500",
-      inactive: "#733939",
+      text: "#D9D9D9",
+      background: "#283120",
+      elementBg: "#F2FFAE",
+      active: "#E12633",
+      inactive: "#90AB4A",
     },
   },
   {
