@@ -28,22 +28,20 @@ const PlayAgainOverlay = () => {
       <div
         className={`w-[50em] bg-elementBg p-4 rounded-md text-center text-text`}
       >
-        {/* Top Section */}
         <div className="flex justify-between px-4">
           <div className="flex justify-between text-3xl mb-4 min-w-60 ">
-            <p className="text-inactive text-left">
-              cpm
-              <br />
-              <span className="text-5xl text-active">{state.avgCPM}</span>
-            </p>
             <p className="text-inactive text-left">
               score
               <br />
               <span className="text-5xl text-active">{state.score}</span>
             </p>
+            <p className="text-inactive text-left">
+              cpm
+              <br />
+              <span className="text-5xl text-active">{state.avgCPM}</span>
+            </p>
           </div>
 
-          {/* Right Section */}
           <div className="flex flex-col">
             <p className="text-right text-sm text-inactive mb-4">
               last 5 scores <br />
