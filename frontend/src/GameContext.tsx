@@ -7,10 +7,11 @@ import React, {
 } from "react";
 import { changeTheme } from "./utils/ThemeSwitcher";
 import { calculateAverageCPM, calculateCPMData } from "./utils/CPMCalculator";
+import { createGameHistoryRecord } from "./utils/gameUtils";
 
 export type LayoutTypes = "grid" | "rows" | "columns";
 
-type GameState = {
+export type GameState = {
   // game states
   gameStarted: boolean;
   gameOver: boolean;
@@ -97,7 +98,7 @@ const initialState: GameState = {
   gameHistory: [],
 };
 
-type GameHistoryRecord = {
+export type GameHistoryRecord = {
   id: string;
   date: number;
   score: number;
@@ -139,7 +140,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "END_GAME":
       const endTime = performance.now();
       const testDuration = Math.floor((endTime - state.startTime) / 1000);
-      // stinky ugly ew ew
+      // TODO: y not just pass state instead?
       const avgCPM = calculateAverageCPM(
         state.clickTimes,
         state.startTime,
@@ -147,25 +148,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         testDuration,
         state.timerDuration
       );
-      const historyRecord: GameHistoryRecord = {
-        id: crypto.randomUUID(),
-        date: Date.now(),
-        score: state.score,
-        cpm: avgCPM,
-        chartData: calculateCPMData(
-          state.clickTimes,
-          state.startTime,
-          testDuration
-        ),
-        layoutType: state.layoutType,
-        gridSize: state.gridSize,
-        timerDuration: state.timerDuration,
-        testDuration,
-        activeTileCount: state.activeTileCount,
-        gridTileGap: state.gridTileGap,
-        gapsCountAsFail: state.gapsCountAsFail,
-        gameMode: state.gameMode,
-      };
+      // TODO: y not pass the whole state?
+      const historyRecord = createGameHistoryRecord(
+        state,
+        avgCPM,
+        testDuration
+      );
 
       return {
         ...state,
