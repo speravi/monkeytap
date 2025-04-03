@@ -15,12 +15,6 @@ const HomePage = () => {
   const { state, dispatch } = useGame();
 
   useEffect(() => {
-    if (state.score > state.bestScore) {
-      dispatch({ type: "SET_BEST_SCORE", payload: state.bestScore });
-    }
-  }, [state.score]);
-
-  useEffect(() => {
     dispatch({ type: "RESET_GAME" });
   }, [
     state.gridSize,
