@@ -1,4 +1,4 @@
-import { GameHistoryRecord, GameState } from "../GameContext";
+import { GameHistoryRecord, GameState } from "../types/types";
 import { calculateCPMData } from "./CPMCalculator";
 
 export const createGameHistoryRecord = (

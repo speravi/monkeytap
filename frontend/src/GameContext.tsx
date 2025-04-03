@@ -6,40 +6,9 @@ import React, {
   useEffect,
 } from "react";
 import { changeTheme } from "./utils/ThemeSwitcher";
-import { calculateAverageCPM, calculateCPMData } from "./utils/CPMCalculator";
+import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
-
-export type LayoutTypes = "grid" | "rows" | "columns";
-
-export type GameState = {
-  // game states
-  gameStarted: boolean;
-  gameOver: boolean;
-  // config
-  gridSize: number;
-  gridTileGap: number;
-  activeTileCount: number;
-  layoutType: LayoutTypes;
-  gameMode: "continuous" | "batch";
-  activeTheme: string;
-  gapsCountAsFail: boolean;
-  // timer
-  timerDuration: number;
-  timeLeft: number;
-  timerExpired: boolean;
-  // scores
-  score: number;
-  bestScore: number;
-  avgCPM: number;
-  lastFiveScores: number[];
-  // click tracking for CPM graph
-  clickTimes: number[];
-  startTime: number;
-  endTime: number;
-  testDuration: number;
-  // game history
-  gameHistory: GameHistoryRecord[];
-};
+import { GameHistoryRecord, GameState, LayoutTypes } from "./types/types";
 
 type GameAction =
   | { type: "RESET_TO_DEFAULT" }
@@ -96,26 +65,6 @@ const initialState: GameState = {
   testDuration: 0,
   // game history
   gameHistory: [],
-};
-
-export type GameHistoryRecord = {
-  id: string;
-  date: number;
-  score: number;
-  cpm: number;
-  chartData: {
-    second: number;
-    cpm: number;
-  }[];
-  // Game configuration
-  layoutType: LayoutTypes;
-  gridSize: number;
-  timerDuration: number;
-  testDuration: number;
-  activeTileCount: number;
-  gridTileGap: number;
-  gapsCountAsFail: boolean;
-  gameMode: "continuous" | "batch";
 };
 
 function gameReducer(state: GameState, action: GameAction): GameState {

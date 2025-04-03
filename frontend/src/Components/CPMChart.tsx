@@ -34,7 +34,6 @@ const CPMChart = ({ chartData: propChartData }: CPMChartProps) => {
   );
   const chartData = propChartData || internalChartData;
 
-  console.log(`\n\n${chartData}\n\n`);
   return (
     <div className="w-full">
       <div className="h-64 w-full">

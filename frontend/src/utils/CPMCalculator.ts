@@ -1,7 +1,4 @@
-export type DataPoint = {
-  second: number;
-  cpm: number;
-};
+import { DataPoint } from "../types/types";
 
 export const calculateCPMData = (
   clickTimes: number[],

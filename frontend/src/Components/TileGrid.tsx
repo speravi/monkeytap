@@ -99,7 +99,6 @@ const TileGrid = () => {
     }
   };
 
-  // TODO: could move this out
   const getGridStyle = (): React.CSSProperties => {
     switch (state.layoutType) {
       case "grid":
