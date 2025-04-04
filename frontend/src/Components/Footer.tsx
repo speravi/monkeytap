@@ -1,3 +1,5 @@
+import { IconCode } from "@tabler/icons-react";
+
 const Footer = () => {
   return (
     <footer className="sm:py-6 py-3 bottom-0 w-full">
@@ -8,7 +10,7 @@ const Footer = () => {
             <div className="flex items-center space-x-4">
               <div className="hover:text-text hover:font-bold">
                 <a href="https://github.com/speravi/monkeytap" target="_blank">
-                  {"</>"} github
+                  <IconCode className="inline-flex items-center gap-1" /> github
                 </a>
               </div>
             </div>

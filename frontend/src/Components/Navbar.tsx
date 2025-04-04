@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import MonkeyTapLogo from "./MonkeyTapLogo";
+import { IconHistory, IconSettingsFilled } from "@tabler/icons-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,10 +20,10 @@ const Navbar = () => {
           </NavLink>
           <div className="hidden pl-4 md:flex md:mr-auto items-center space-x-5 text-lg">
             <NavLink className={linkClass} to="/settings">
-              settings
+              <IconSettingsFilled />
             </NavLink>
             <NavLink className={linkClass} to="/history">
-              history
+              <IconHistory />
             </NavLink>
           </div>
         </div>
