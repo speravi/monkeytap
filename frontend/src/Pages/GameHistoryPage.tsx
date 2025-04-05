@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useGame } from "../GameContext";
 import CPMChart from "../Components/CPMChart";
+import React from "react";
 
 const GameHistoryPage = () => {
   const { state, dispatch } = useGame();
@@ -36,11 +37,8 @@ const GameHistoryPage = () => {
             </thead>
             <tbody>
               {state.gameHistory.map((game: any) => (
-                <>
-                  <tr
-                    key={game.id}
-                    className="odd:bg-background even:bg-elementBg rounded-md"
-                  >
+                <React.Fragment key={game.id}>
+                  <tr className="odd:bg-background even:bg-elementBg rounded-md">
                     <td className="px-4 py-3 text-center align-middle">
                       {game.cpm.toFixed(1)}
                     </td>
@@ -137,7 +135,7 @@ const GameHistoryPage = () => {
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               ))}
             </tbody>
           </table>
