@@ -12,13 +12,19 @@ import { calculateCPMData } from "../utils/CPMCalculator";
 
 type CPMChartProps = {
   chartData?: { second: number; cpm: number }[];
+  testDuration?: number;
 };
 
-const CPMChart = ({ chartData: propChartData }: CPMChartProps) => {
+const CPMChart = ({
+  chartData: propChartData,
+  testDuration: propTestDuration,
+}: CPMChartProps) => {
   const { state } = useGame();
 
-  // No graph for games under 2 sec
-  if (state.testDuration < 2) {
+  const testDuration =
+    propTestDuration !== undefined ? propTestDuration : state.testDuration;
+
+  if (testDuration < 2) {
     return (
       <div className="text-center text-inactive">
         game too short to display CPM graph
@@ -26,13 +32,9 @@ const CPMChart = ({ chartData: propChartData }: CPMChartProps) => {
     );
   }
 
-  // TODO: ewww, think of a better way to do this
-  const internalChartData = calculateCPMData(
-    state.clickTimes,
-    state.startTime,
-    state.testDuration
-  );
-  const chartData = propChartData || internalChartData;
+  const chartData =
+    propChartData ||
+    calculateCPMData(state.clickTimes, state.startTime, state.testDuration);
 
   return (
     <div className="w-full">
