@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useGame } from "../GameContext";
 import CPMChart from "../Components/CPMChart";
 import React from "react";
@@ -8,13 +8,19 @@ const GameHistoryPage = () => {
   const [expandedGame, setExpandedGame] = useState<string | null>(null);
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString();
-  };
+    const date = new Date(timestamp);
+    const yyyy = date.getFullYear();
+    const mm = (date.getMonth() + 1).toString().padStart(2, "0");
+    const dd = date.getDate().toString().padStart(2, "0");
+    const hh = date.getHours().toString().padStart(2, "0");
+    const min = date.getMinutes().toString().padStart(2, "0");
 
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  };
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <h1 className="text-2xl mb-4">game history</h1>
-
+      <h1 className="text-2xl ">game history</h1>
+      <h2 className="text-xl text-inactive mb-4">last 50 games</h2>
       {state.gameHistory.length === 0 ? (
         <div className="text-center text-inactive my-4">
           No game history available
