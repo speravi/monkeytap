@@ -24,6 +24,7 @@ type GameAction =
   | { type: "SET_GAME_MODE"; payload: "continuous" | "batch" }
   | { type: "SET_ACTIVE_THEME"; payload: string }
   | { type: "SET_GAPS_COUNT_AS_FAIL"; payload: boolean }
+  | { type: "SET_GAME_OVER_ON_INACTIVE_CLICK"; payload: boolean }
   // timer
   | { type: "SET_TIMER_DURATION"; payload: number }
   | { type: "SET_TIME_LEFT"; payload: number }
@@ -31,6 +32,7 @@ type GameAction =
   | { type: "SET_SCORE"; payload: number }
   | { type: "SET_BEST_SCORE"; payload: number }
   | { type: "ADD_SCORE"; payload: number }
+  | { type: "INCREMENT_MISSED_CLICKS" }
   // click tracking
   | { type: "RECORD_CLICK"; payload: number }
   // game history
@@ -50,6 +52,7 @@ const initialState: GameState = {
   gameMode: "continuous",
   activeTheme: "",
   gapsCountAsFail: false,
+  gameOverOnInactiveClick: true,
   // timer
   timerDuration: 15,
   timeLeft: 15,
@@ -58,6 +61,7 @@ const initialState: GameState = {
   bestScore: 0,
   avgCPM: 0,
   lastFiveScores: [],
+  missedClicks: 0,
   // click tracking
   clickTimes: [],
   startTime: 0,
@@ -83,6 +87,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         timerExpired: false,
         clickTimes: [],
         startTime: 0,
+        missedClicks: 0,
       };
     case "START_GAME":
       return { ...state, gameStarted: true, startTime: performance.now() };
@@ -138,7 +143,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         timerDuration: action.payload,
         timeLeft: action.payload,
       };
-
+    case "SET_GAME_OVER_ON_INACTIVE_CLICK":
+      return { ...state, gameOverOnInactiveClick: action.payload };
     // timer & scores
     case "SET_TIME_LEFT":
       return { ...state, timeLeft: action.payload };
@@ -161,6 +167,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         ...state,
         clickTimes: [...state.clickTimes, action.payload],
       };
+    case "INCREMENT_MISSED_CLICKS":
+      return { ...state, missedClicks: state.missedClicks + 1 };
     default:
       return state;
   }
