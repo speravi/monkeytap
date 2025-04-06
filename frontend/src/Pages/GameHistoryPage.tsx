@@ -98,6 +98,10 @@ const GameHistoryPage = () => {
                               <td>{game.activeTileCount}</td>
                               <td>Grid Gap:</td>
                               <td>{game.gridTileGap}px</td>
+                              {/* {game.gameOverOnInactiveClick && (
+                                <td>Accuracy:</td>
+                                <td>{game.accuracy}</td>
+                              )} */}
                             </tr>
                             <tr>
                               <td>Gaps as Fail:</td>

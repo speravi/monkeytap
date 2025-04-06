@@ -4,6 +4,8 @@ import CPMChart from "./CPMChart";
 
 const PlayAgainOverlay = () => {
   const { state, dispatch } = useGame();
+
+  // TODO: move to utils, call from reducer, store in gamerecord
   const accuracy =
     state.clickTimes.length > 0
       ? ((state.clickTimes.length - state.missedClicks) /
@@ -32,8 +34,11 @@ const PlayAgainOverlay = () => {
         className={`w-[50em] bg-elementBg p-4 rounded-md text-center text-text`}
       >
         <div className="flex justify-between px-4">
-          {/* TODO: min-w-60 max-w-96 feels wrong  */}
-          <div className="flex justify-between text-3xl mb-4 min-w-60 max-w-96 ">
+          <div
+            className={`flex justify-between text-3xl mb-4 ${
+              state.gameOverOnInactiveClick ? "w-60" : "w-96"
+            }`}
+          >
             <p className="text-inactive text-left">
               score
               <br />
