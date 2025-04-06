@@ -1,5 +1,6 @@
 import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelector";
 import GameModeSelector from "../Components/Config/GameModeSelector";
+import GameOverOnInactiveClickToggle from "../Components/Config/GameOverOnInactiveClickToggle";
 import GridSizeSelector from "../Components/Config/GridSizeSelector";
 import GridTileGapSelector from "../Components/Config/GridTileGapSelector";
 import LayoutSelector from "../Components/Config/LayoutSelector";
@@ -43,6 +44,10 @@ const SettingsPage = () => {
         <div className="mb-4">
           <h2 className="text-xl mb-2">game mode</h2>
           <GameModeSelector />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl mb-2">game over on inactive tile click</h2>
+          <GameOverOnInactiveClickToggle />
         </div>
         <div className="mb-4">
           <h2 className="text-xl mb-2">theme</h2>

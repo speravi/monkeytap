@@ -32,6 +32,7 @@ export type GameState = {
   gameMode: "continuous" | "batch";
   activeTheme: string;
   gapsCountAsFail: boolean;
+  gameOverOnInactiveClick: boolean;
   // timer
   timerDuration: number;
   timeLeft: number;
@@ -41,6 +42,7 @@ export type GameState = {
   bestScore: number;
   avgCPM: number;
   lastFiveScores: number[];
+  missedClicks: number;
   // click tracking for CPM graph
   clickTimes: number[];
   startTime: number;

@@ -15,7 +15,7 @@ const RegisterGapClickToggle = () => {
         state.gapsCountAsFail ? `text-active` : `text-inactive`
       }`}
     >
-      true
+      {state.gapsCountAsFail ? "true" : "false"}
     </button>
   );
 };

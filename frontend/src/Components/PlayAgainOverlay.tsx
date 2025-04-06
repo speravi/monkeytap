@@ -4,18 +4,21 @@ import CPMChart from "./CPMChart";
 
 const PlayAgainOverlay = () => {
   const { state, dispatch } = useGame();
+  const accuracy =
+    state.clickTimes.length > 0
+      ? ((state.clickTimes.length - state.missedClicks) /
+          state.clickTimes.length) *
+        100
+      : 0;
 
-  // Add event listener for spacebar to restart game
   useEffect(() => {
     const handleKeyDown = (event: { code: string }) => {
       if (event.code === "Space" || event.code === "Escape") {
         dispatch({ type: "RESET_GAME" });
       }
     };
-
+    // TODO: what is this
     window.addEventListener("keydown", handleKeyDown);
-
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -29,12 +32,22 @@ const PlayAgainOverlay = () => {
         className={`w-[50em] bg-elementBg p-4 rounded-md text-center text-text`}
       >
         <div className="flex justify-between px-4">
-          <div className="flex justify-between text-3xl mb-4 min-w-60 ">
+          {/* TODO: min-w-60 max-w-96 feels wrong  */}
+          <div className="flex justify-between text-3xl mb-4 min-w-60 max-w-96 ">
             <p className="text-inactive text-left">
               score
               <br />
               <span className="text-5xl text-active">{state.score}</span>
             </p>
+            {!state.gameOverOnInactiveClick && (
+              <p className="text-inactive text-left">
+                accuracy
+                <br />
+                <span className="text-5xl text-active">
+                  {accuracy.toFixed(0)}%
+                </span>
+              </p>
+            )}
             <p className="text-inactive text-left">
               cpm
               <br />

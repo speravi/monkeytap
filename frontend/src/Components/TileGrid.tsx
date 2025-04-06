@@ -83,7 +83,11 @@ const TileGrid = () => {
         }
       }
     } else {
-      dispatch({ type: "END_GAME" });
+      if (state.gameOverOnInactiveClick) {
+        dispatch({ type: "END_GAME" });
+      } else {
+        dispatch({ type: "INCREMENT_MISSED_CLICKS" });
+      }
     }
   };
 
