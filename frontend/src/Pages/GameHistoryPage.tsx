@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useGame } from "../GameContext";
 import CPMChart from "../Components/CPMChart";
 import React from "react";
+import ConfirmActionModal from "../Components/ConfirmActionModal";
 
 const GameHistoryPage = () => {
   const { state, dispatch } = useGame();
   const [expandedGame, setExpandedGame] = useState<string | null>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const formatDate = (timestamp: number) => {
     const date = new Date(timestamp);
@@ -17,6 +19,11 @@ const GameHistoryPage = () => {
 
     return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   };
+
+  const handleClearHistoryConfirm = () => {
+    dispatch({ type: "CLEAR_GAME_HISTORY" });
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       <h1 className="text-2xl ">game history</h1>
@@ -98,7 +105,7 @@ const GameHistoryPage = () => {
                               <td>{game.activeTileCount}</td>
                               <td>Grid Gap:</td>
                               <td>{game.gridTileGap}px</td>
-                              {/* {game.gameOverOnInactiveClick && (
+                              {/* TODO: this {game.gameOverOnInactiveClick && (
                                 <td>Accuracy:</td>
                                 <td>{game.accuracy}</td>
                               )} */}
@@ -152,14 +159,23 @@ const GameHistoryPage = () => {
               ))}
             </tbody>
           </table>
+
           <button
-            className="mt-4 p-2 bg-red-500 rounded"
-            onClick={() => dispatch({ type: "CLEAR_GAME_HISTORY" })}
+            className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+            onClick={() => setIsConfirmModalOpen(true)}
           >
             clear history
           </button>
         </div>
       )}
+
+      <ConfirmActionModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleClearHistoryConfirm}
+        title="Clear Game History"
+        message="Are you sure you want to permanently delete all game history? This action cannot be undone."
+      />
     </div>
   );
 };

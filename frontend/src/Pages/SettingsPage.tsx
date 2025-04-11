@@ -1,3 +1,4 @@
+import { useState } from "react";
 import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelector";
 import GameModeSelector from "../Components/Config/GameModeSelector";
 import GameOverOnInactiveClickToggle from "../Components/Config/GameOverOnInactiveClickToggle";
@@ -8,11 +9,15 @@ import RegisterGapClickToggle from "../Components/Config/RegisterGapClickToggle"
 import ThemeSelector from "../Components/Config/ThemeSelector";
 import TimerSelector from "../Components/Config/TimerSelector";
 import { useGame } from "../GameContext";
+import ConfirmActionModal from "../Components/ConfirmActionModal";
 
 const SettingsPage = () => {
   //TODO: idk if i like this here
   const { dispatch } = useGame();
-
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const handleResetSettingsConfirm = () => {
+    dispatch({ type: "RESET_TO_DEFAULT" });
+  };
   return (
     <div className="w-full max-w-4xl mx-auto">
       <h1 className="text-2xl mb-4">game settings</h1>
@@ -55,13 +60,20 @@ const SettingsPage = () => {
         </div>
         <div className="mb-4">
           <button
-            onClick={() => dispatch({ type: "RESET_TO_DEFAULT" })}
+            onClick={() => setIsConfirmModalOpen(true)}
             className="p-2 bg-red-500 text-white rounded"
           >
             reset to default
           </button>
         </div>
       </div>
+      <ConfirmActionModal
+        isOpen={isConfirmModalOpen}
+        onClose={() => setIsConfirmModalOpen(false)}
+        onConfirm={handleResetSettingsConfirm}
+        title="Reset settings"
+        message="Are you sure you want reset all settings to default?"
+      />
     </div>
   );
 };
