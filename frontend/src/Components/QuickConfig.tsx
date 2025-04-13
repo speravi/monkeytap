@@ -24,7 +24,7 @@ const QuickConfig = () => {
     >
       <button
         onClick={() => setIsConfirmModalOpen(true)}
-        className="absolute top-2 right-2 p-1 text-inactive hover:text-active cursor-pointer z-10"
+        className="absolute top-2 right-2 p-1 text-inactive hover:text-active cursor-pointer"
         title="Reset settings to default"
       >
         <IconRotate size={20} />
