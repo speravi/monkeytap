@@ -10,6 +10,7 @@ import Score from "../Components/Score";
 import Timer from "../Components/Timer";
 import TimerSelector from "../Components/Config/TimerSelector";
 import { useGame } from "../GameContext";
+import QuickConfig from "../Components/QuickConfig";
 
 const HomePage = () => {
   const { state, dispatch } = useGame();
@@ -25,47 +26,7 @@ const HomePage = () => {
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* config */}
-      <div
-        className={`
-          bg-elementBg rounded-md text-sm flex mb-2 p-2 flex-col
-        `}
-      >
-        <div className="lg:pb-5">
-          <div className="flex justify-center">
-            <LayoutSelector />
-          </div>
-          <Spacer />
-          <div className="flex justify-center">
-            <GridSizeSelector />
-          </div>
-        </div>
-        <div className="flex justify-center content-center md:flex-row flex-col ">
-          <div>
-            <div className={`flex justify-center text-inactive`}>timer</div>
-            <div className="flex justify-center">
-              <TimerSelector />
-            </div>
-          </div>
-          <Spacer />
-          <div>
-            <div className={`flex justify-center text-inactive`}>
-              active tile count
-            </div>
-            <div className="flex justify-center">
-              <ActiveTileCountSelector />
-            </div>
-          </div>
-          <Spacer />
-          <div>
-            <div className={`flex justify-center text-inactive`}>
-              grid tile gap
-            </div>
-            <div className="flex justify-center">
-              <GridTileGapSelector />
-            </div>
-          </div>
-        </div>
-      </div>
+      <QuickConfig />
       {/* timer & score */}
       <div className="flex justify-center">
         <div className=" flex justify-around gap-80 items-center w-5/6">
