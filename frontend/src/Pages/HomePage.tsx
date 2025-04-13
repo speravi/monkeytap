@@ -1,14 +1,8 @@
 import { useEffect } from "react";
 import TileGrid from "../Components/TileGrid";
-import GridSizeSelector from "../Components/Config/GridSizeSelector";
-import LayoutSelector from "../Components/Config/LayoutSelector";
-import Spacer from "../Components/Spacer";
 import PlayAgainOverlay from "../Components/PlayAgainOverlay";
-import ActiveTileCountSelector from "../Components/Config/ActiveTileCountSelector";
-import GridTileGapSelector from "../Components/Config/GridTileGapSelector";
 import Score from "../Components/Score";
 import Timer from "../Components/Timer";
-import TimerSelector from "../Components/Config/TimerSelector";
 import { useGame } from "../GameContext";
 import QuickConfig from "../Components/QuickConfig";
 
