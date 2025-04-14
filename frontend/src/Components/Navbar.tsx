@@ -58,10 +58,9 @@ const Navbar = () => {
           </button>
         </div>
       </div>
-
       {/* burger menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-background md:hidden">
+        <div className="absolute top-full left-0 right-0 bg-background md:hidden z-50">
           <div className="flex flex-col items-center pb-3 space-y-4">
             <NavLink
               className={linkClass}
