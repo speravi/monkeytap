@@ -166,7 +166,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "mint",
-    name: "Mint",
+    name: "mint",
     colors: {
       text: "#fffafb",
       background: "#131515",
@@ -177,7 +177,7 @@ export const THEMES: Theme[] = [
   },
   {
     id: "late_night_walk",
-    name: "Late night walk",
+    name: "late night walk",
     colors: {
       text: "#e8e5dc",
       background: "#27282b",
