@@ -28,12 +28,12 @@
     --color-inactive: #516e80;
   }
 
-  html[data-theme="sunset_glow"] {
-    --color-text: #ffedd5;
-    --color-background: #4a171b;
-    --color-elementBg: #652427;
-    --color-active: #ff6b3b;
-    --color-inactive: #8e575a;
+  html[data-theme="cinder_blush"] {
+    --color-text: #fbe9e7;
+    --color-background: #2a1a18;
+    --color-elementBg: #402524;
+    --color-active: #ff725e;
+    --color-inactive: #7c4f4a;
   }
 
   html[data-theme="electric_dreams"] {
@@ -43,12 +43,12 @@
     --color-active: #ff00f6;
     --color-inactive: #5a4984;
   }
-  html[data-theme="watermelon"] {
-    --color-text: #ffacac;
-    --color-background: #283120;
-    --color-elementBg: #223100;
-    --color-active: #e12633;
-    --color-inactive: #6c8628;
+  html[data-theme="plum_mint"] {
+    --color-text: #f6fdf9;
+    --color-background: #251e29;
+    --color-elementBg: #3c2f44;
+    --color-active: #c1ffdd;
+    --color-inactive: #85688f;
   }
 
   html[data-theme="neon_night"] {
@@ -91,60 +91,52 @@
     --color-inactive: #377f8a;
   }
 
-  html[data-theme="team_fortress_2"] {
-    --color-text: #ffecd2;
-    --color-background: #373737;
-    --color-elementBg: #6b6b6b;
-    --color-active: #ef7122;
-    --color-inactive: #c3b9a1;
+  html[data-theme="deep_sea"] {
+    --color-text: #e3fdf7;
+    --color-background: #000c0d;
+    --color-elementBg: #002120;
+    --color-active: #01ffd7;
+    --color-inactive: #005f54;
   }
 
-  html[data-theme="cosmic_wave"] {
-    --color-text: #e4eaff;
-    --color-background: #0e0039;
-    --color-elementBg: #200075;
-    --color-active: #9b59ff;
-    --color-inactive: #594780;
-  }
-
-  html[data-theme="autumn_rust"] {
-    --color-text: #fff8e6;
-    --color-background: #3a210b;
-    --color-elementBg: #573615;
-    --color-active: #e67e22;
-    --color-inactive: #805840;
-  }
-
-  html[data-theme="ogre_dream"] {
-    --color-text: #f0ead2;
-    --color-background: #6c584c;
-    --color-elementBg: #a98467;
-    --color-active: #c4d200;
-    --color-inactive: #dde5b6;
-  }
-
-  /* html[data-theme="mint"] {
+  html[data-theme="mint"] {
     --color-text: #fffafb;
     --color-background: #131515;
     --color-elementBg: #2b2c28;
     --color-active: #5fffd7;
     --color-inactive: #bbbea8;
-  } */
-
-  html[data-theme="jade_silk"] {
-    --color-text: #e8fff2;
-    --color-background: #003824;
-    --color-elementBg: #005b37;
-    --color-active: #00e676;
-    --color-inactive: #12241c;
   }
 
-  html[data-theme="amber_glow"] {
-    --color-text: #fffae6;
-    --color-background: #3f2100;
-    --color-elementBg: #5a2f00;
-    --color-active: #ffa500;
-    --color-inactive: #805d38;
+  html[data-theme="late_night_walk"] {
+    --color-text: #e8e5dc;
+    --color-background: #27282b;
+    --color-elementBg: #3e3e3e;
+    --color-active: #eed78a;
+    --color-inactive: #5e5c56;
+  }
+
+  html[data-theme="red_directive"] {
+    --color-text: #ffa5ac;
+    --color-background: #292f2c;
+    --color-elementBg: #272b22;
+    --color-active: #ff192b;
+    --color-inactive: #767a69;
+  }
+
+  html[data-theme="void_silk"] {
+    --color-text: #dfeef0;
+    --color-background: #070711;
+    --color-elementBg: #130f24;
+    --color-active: #b944b2;
+    --color-inactive: #534e58;
+  }
+
+  html[data-theme="golden_dusk"] {
+    --color-text: #fff9e6;
+    --color-background: #1e1a13;
+    --color-elementBg: #3a2f1c;
+    --color-active: #e0a843;
+    --color-inactive: #7e6747;
   }
 
   html[data-theme="midnight_frost"] {
