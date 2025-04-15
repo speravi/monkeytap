@@ -28,7 +28,7 @@ const PlayAgainOverlay = () => {
 
   return (
     <div
-      className={`absolute inset-0 flex items-center justify-center backdrop-blur-sm`}
+      className={`absolute z-50 inset-0 flex items-center justify-center backdrop-blur-sm`}
     >
       <div
         className={`w-[50em] bg-elementBg p-4 rounded-md text-center text-text`}
