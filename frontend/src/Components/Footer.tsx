@@ -1,4 +1,5 @@
 import { IconCode } from "@tabler/icons-react";
+import QuickThemeSwitcher from "./QuickThemeSwitcher";
 
 const Footer = () => {
   return (
@@ -19,6 +20,7 @@ const Footer = () => {
           {/* Right container */}
           <div className="text-inactive sm:flex-1 flex justify-center sm:justify-end mt-2 sm:mt-0">
             <div className="flex items-center space-x-4">
+              <QuickThemeSwitcher />
               <div>inspired by</div>
               <a
                 className="text-text hover:font-bold"
