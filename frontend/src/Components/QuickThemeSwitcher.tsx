@@ -6,16 +6,17 @@ import { IconPaletteFilled } from "@tabler/icons-react";
 
 const QuickThemeSwitcher = () => {
   const { state, dispatch } = useGame();
-  const { activeTheme } = state;
+
   const [isOpen, setIsOpen] = useState(false);
   const [previewThemeId, setPreviewThemeId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   // TODO: This feels hacky
-  const activeThemeObject = THEMES.find((theme) => theme.id === activeTheme);
-  const currentThemeDisplayName =
-    activeThemeObject?.name || activeTheme?.replace(/_/g, " ") || "serika dark";
+  const activeThemeObject = THEMES.find(
+    (theme) => theme.id === state.activeTheme
+  );
+  const currentThemeDisplayName = activeThemeObject?.name;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -27,7 +28,7 @@ const QuickThemeSwitcher = () => {
       ) {
         // Before closing, revert any active preview
         if (previewThemeId) {
-          changeTheme(activeTheme); // Revert to actual active theme
+          changeTheme(state.activeTheme); // Revert to actual active theme
           setPreviewThemeId(null);
         }
         setIsOpen(false);
@@ -38,12 +39,12 @@ const QuickThemeSwitcher = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [activeTheme, previewThemeId]); // Add dependencies
+  }, [state.activeTheme, previewThemeId]); // Add dependencies
 
   const toggleMenu = () => {
     // If closing and a preview was active, revert it
     if (isOpen && previewThemeId) {
-      changeTheme(activeTheme);
+      changeTheme(state.activeTheme);
       setPreviewThemeId(null);
     }
     setIsOpen(!isOpen);
@@ -51,16 +52,14 @@ const QuickThemeSwitcher = () => {
 
   // Apply theme permanently
   const handleThemeSelect = (themeId: string) => {
-    // TODO: ????
     dispatch({ type: "SET_ACTIVE_THEME", payload: themeId });
-    changeTheme(themeId); // Ensure permanent application
     setPreviewThemeId(null); // Clear any preview state
     setIsOpen(false); // Close menu
   };
 
   // Preview theme on hover
   const handleThemePreview = (themeId: string) => {
-    if (themeId !== activeTheme && themeId !== previewThemeId) {
+    if (themeId !== state.activeTheme && themeId !== previewThemeId) {
       setPreviewThemeId(themeId);
       changeTheme(themeId);
     }
@@ -69,7 +68,7 @@ const QuickThemeSwitcher = () => {
   // Revert preview when mouse leaves the menu area
   const handleMouseLeaveMenu = () => {
     if (previewThemeId) {
-      changeTheme(activeTheme); // Revert to the actual active theme
+      changeTheme(state.activeTheme); // Revert to the actual active theme
       setPreviewThemeId(null);
     }
   };
@@ -102,7 +101,7 @@ const QuickThemeSwitcher = () => {
                 // `onMouseLeave` on individual items is not needed if we handle it on the parent menu
                 style={{
                   backgroundColor: colors.elementBg, // Use theme's element bg for button
-                  ...(activeTheme === id &&
+                  ...(state.activeTheme === id &&
                     !previewThemeId && {
                       // Highlight active only if not previewing
                       outlineColor: colors.active,

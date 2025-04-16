@@ -4,7 +4,7 @@
 
 /* TODO: would be nice to have seperate files for each theme */
 @layer base {
-  html {
+  html[data-theme="serika_dark"] {
     --color-text: #d1d0c5;
     --color-background: #323437;
     --color-elementBg: #2c2e31;

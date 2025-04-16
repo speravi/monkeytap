@@ -11,7 +11,7 @@ export interface Theme {
 }
 export const THEMES: Theme[] = [
   {
-    id: "",
+    id: "serika_dark",
     name: "serika dark",
     colors: {
       text: "#d1d0c5",
