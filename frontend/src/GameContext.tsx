@@ -50,7 +50,7 @@ const initialState: GameState = {
   activeTileCount: 3,
   layoutType: "grid",
   gameMode: "continuous",
-  activeTheme: "",
+  activeTheme: "serika_dark",
   gapsCountAsFail: false,
   gameOverOnInactiveClick: true,
   // timer
@@ -108,7 +108,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         avgCPM,
         testDuration
       );
-
       return {
         ...state,
         lastFiveScores: [...state.lastFiveScores, state.score].slice(-5),
@@ -184,12 +183,13 @@ const GameContext = createContext<
 
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState, (initial) => {
+    // Load initial state & history from localStorage
     const storedConfig = localStorage.getItem("gameConfig");
     const storedHistory = localStorage.getItem("gameHistory");
     const loadedState = storedConfig
       ? { ...initial, ...JSON.parse(storedConfig) }
       : initial;
-
+    changeTheme(loadedState?.activeTheme);
     return {
       ...loadedState,
       gameHistory: storedHistory ? JSON.parse(storedHistory) : [],
@@ -199,7 +199,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const { gameHistory, ...config } = state;
     localStorage.setItem("gameConfig", JSON.stringify(config));
-    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
   }, [
     state.gridSize,
     state.gridTileGap,
@@ -209,8 +208,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
     state.activeTheme,
     state.gapsCountAsFail,
     state.timerDuration,
-    state.gameHistory,
   ]);
+
+  useEffect(() => {
+    localStorage.setItem("gameHistory", JSON.stringify(state.gameHistory));
+  }, [state.gameHistory]);
 
   return (
     <GameContext.Provider value={{ state, dispatch }}>
