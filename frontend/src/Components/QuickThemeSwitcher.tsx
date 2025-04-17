@@ -78,11 +78,13 @@ const QuickThemeSwitcher = () => {
       <button
         ref={buttonRef}
         onClick={toggleMenu}
-        className="p-2 rounded-md text-inactive hover:text-text"
+        className="rounded-md text-inactive hover:text-text flex items-center justify-center"
         aria-label="change theme"
       >
-        <IconPaletteFilled className="inline-flex items-center gap-1" />{" "}
-        {currentThemeDisplayName}
+        <div className="inline-flex items-center gap-1">
+          <IconPaletteFilled size={15} />
+          <span>{currentThemeDisplayName}</span>
+        </div>
       </button>
 
       {/* Menu */}
