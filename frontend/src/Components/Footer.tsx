@@ -3,13 +3,13 @@ import QuickThemeSwitcher from "./QuickThemeSwitcher";
 
 const Footer = () => {
   return (
-    <footer className="sm:py-6 py-3 bottom-0 w-full">
+    <footer className="sm:py-6 py-2 bottom-0 w-full text-sm">
       <div className="container mx-auto px-10">
-        <div className="flex flex-col sm:flex-row w-full">
+        <div className="flex flex-col md:flex-row w-full">
           {/* Left container */}
-          <div className="text-inactive sm:flex-1 flex justify-center sm:justify-start">
+          <div className="text-inactive sm:flex-1 flex justify-center md:justify-start">
             <div className="flex items-center space-x-4">
-              <div className="hover:text-text hover:font-bold">
+              <div className="hover:text-text ">
                 <a href="https://github.com/speravi/monkeytap" target="_blank">
                   <IconCode className="inline-flex items-center gap-1" /> github
                 </a>
@@ -18,17 +18,19 @@ const Footer = () => {
           </div>
 
           {/* Right container */}
-          <div className="text-inactive sm:flex-1 flex justify-center sm:justify-end mt-2 sm:mt-0">
+          <div className="text-inactive sm:flex-1 flex justify-center md:justify-end sm:mt-0">
             <div className="flex items-center space-x-4">
               <QuickThemeSwitcher />
-              <div>inspired by</div>
-              <a
-                className="text-text hover:font-bold"
-                href="https://monkeytype.com"
-                target="_blank"
-              >
-                monkeytype
-              </a>
+              <div className="inline-flex gap-2">
+                <div>inspired by</div>
+                <a
+                  className="text-text hover:font-bold"
+                  href="https://monkeytype.com"
+                  target="_blank"
+                >
+                  monkeytype
+                </a>
+              </div>
             </div>
           </div>
         </div>
