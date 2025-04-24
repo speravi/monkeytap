@@ -15,10 +15,12 @@ export type GameHistoryRecord = {
   activeTileCount: number;
   gridTileGap: number;
   gapsCountAsFail: boolean;
-  gameMode: "continuous" | "batch";
+  gameMode: GameModes;
 };
 
+export type GameModes = "continuous" | "batch";
 export type LayoutTypes = "grid" | "rows" | "columns";
+export type MouseButtonOption = "left" | "right" | "both";
 
 export type GameState = {
   // game states
@@ -29,10 +31,11 @@ export type GameState = {
   gridTileGap: number;
   activeTileCount: number;
   layoutType: LayoutTypes;
-  gameMode: "continuous" | "batch";
+  gameMode: GameModes;
   activeTheme: string;
   gapsCountAsFail: boolean;
   gameOverOnInactiveClick: boolean;
+  allowedMouseButton: MouseButtonOption;
   // timer
   timerDuration: number;
   timeLeft: number;
