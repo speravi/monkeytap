@@ -29,6 +29,7 @@ const PlayAgainOverlay = () => {
   return (
     <div
       className={`absolute z-50 inset-0 flex items-center justify-center backdrop-blur-sm`}
+      onContextMenu={(e) => e.preventDefault()}
     >
       <div
         className={`w-[50em] bg-elementBg p-4 rounded-md text-center text-text`}

@@ -8,7 +8,12 @@ import React, {
 import { changeTheme } from "./utils/ThemeSwitcher";
 import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
-import { GameHistoryRecord, GameState, LayoutTypes } from "./types/types";
+import {
+  GameHistoryRecord,
+  GameState,
+  LayoutTypes,
+  MouseButtonOption,
+} from "./types/types";
 
 type GameAction =
   | { type: "RESET_TO_DEFAULT" }
@@ -25,6 +30,7 @@ type GameAction =
   | { type: "SET_ACTIVE_THEME"; payload: string }
   | { type: "SET_GAPS_COUNT_AS_FAIL"; payload: boolean }
   | { type: "SET_GAME_OVER_ON_INACTIVE_CLICK"; payload: boolean }
+  | { type: "SET_ALLOWED_MOUSE_BUTTON"; payload: MouseButtonOption }
   // timer
   | { type: "SET_TIMER_DURATION"; payload: number }
   | { type: "SET_TIME_LEFT"; payload: number }
@@ -53,6 +59,7 @@ const initialState: GameState = {
   activeTheme: "serika_dark",
   gapsCountAsFail: false,
   gameOverOnInactiveClick: true,
+  allowedMouseButton: "left",
   // timer
   timerDuration: 15,
   timeLeft: 15,
@@ -144,6 +151,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       };
     case "SET_GAME_OVER_ON_INACTIVE_CLICK":
       return { ...state, gameOverOnInactiveClick: action.payload };
+    case "SET_ALLOWED_MOUSE_BUTTON":
+      return { ...state, allowedMouseButton: action.payload };
     // timer & scores
     case "SET_TIME_LEFT":
       return { ...state, timeLeft: action.payload };
@@ -208,6 +217,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     state.activeTheme,
     state.gapsCountAsFail,
     state.timerDuration,
+    state.allowedMouseButton,
   ]);
 
   useEffect(() => {

@@ -54,8 +54,24 @@ const TileGrid = () => {
     setTiles(newTiles);
   };
 
-  const handleTileMouseDown = (id: number) => {
+  const handleTileMouseDown = (
+    id: number,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     if (state.gameOver) return;
+
+    // TODO: changes needed, duplicate the logic from handleGridClick to check for allowed mouse button
+    const isLeftClick = event.button === 0;
+    const isRightClick = event.button === 2; // 0 = left, 1 = middle, 2 = right
+    const isAllowedClick =
+      (state.allowedMouseButton === "left" && isLeftClick) ||
+      (state.allowedMouseButton === "right" && isRightClick) ||
+      (state.allowedMouseButton === "both" && (isLeftClick || isRightClick));
+
+    if (!isAllowedClick) {
+      return; // Ignore the click if the button is not allowed
+    }
+
     if (!state.gameStarted) {
       dispatch({ type: "START_GAME" });
     }
@@ -92,6 +108,19 @@ const TileGrid = () => {
   };
 
   const handleGridClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    // TODO:
+    const isLeftClick = e.button === 0;
+    const isRightClick = e.button === 2;
+
+    const isAllowedClick =
+      (state.allowedMouseButton === "left" && isLeftClick) ||
+      (state.allowedMouseButton === "right" && isRightClick) ||
+      (state.allowedMouseButton === "both" && (isLeftClick || isRightClick));
+
+    if (!isAllowedClick) {
+      return; // Ignore the click if the button is not allowed
+    }
+
     if (state.gameOver || !state.gapsCountAsFail) return;
     if (e.currentTarget === e.target) {
       const currentTime = performance.now();
@@ -136,6 +165,7 @@ const TileGrid = () => {
         } p-2 bg-elementBg rounded-md`}
         style={{ ...getGridStyle(), gap: `${state.gridTileGap}px` }}
         onMouseDown={handleGridClick}
+        onContextMenu={(e) => e.preventDefault()}
       >
         {tiles.map((tile) => (
           <button
@@ -146,8 +176,9 @@ const TileGrid = () => {
             } ${state.layoutType === "columns" ? "flex-1" : ""}`}
             onMouseDown={(e) => {
               e.stopPropagation(); // Prevent the grid click handler from firing
-              handleTileMouseDown(tile.id);
+              handleTileMouseDown(tile.id, e);
             }}
+            onContextMenu={(e) => e.preventDefault()} // Prevent default right-click menu on buttons
             disabled={state.gameOver}
           ></button>
         ))}
