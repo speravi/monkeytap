@@ -92,7 +92,7 @@ const QuickThemeSwitcher = () => {
         <div
           ref={menuRef}
           onMouseLeave={handleMouseLeaveMenu} // Revert preview when leaving the whole menu
-          className="absolute bottom-full right-0 mb-2 w-56 bg-elementBg rounded-lg p-2 max-h-96 overflow-y-auto"
+          className="absolute bottom-full -right-11 sm:right-0 mb-2 w-56 bg-elementBg rounded-lg p-2 max-h-96 overflow-y-auto"
         >
           <div className="grid grid-cols-1 gap-1">
             {THEMES.map(({ id, name, colors }) => (
