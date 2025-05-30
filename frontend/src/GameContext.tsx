@@ -31,6 +31,9 @@ type GameAction =
   | { type: "SET_GAPS_COUNT_AS_FAIL"; payload: boolean }
   | { type: "SET_GAME_OVER_ON_INACTIVE_CLICK"; payload: boolean }
   | { type: "SET_ALLOWED_MOUSE_BUTTON"; payload: MouseButtonOption }
+  // sounds
+  | { type: "SET_CLICK_SOUND"; payload: string }
+  | { type: "SET_CLICK_SOUND_VOLUME"; payload: number }
   // timer
   | { type: "SET_TIMER_DURATION"; payload: number }
   | { type: "SET_TIME_LEFT"; payload: number }
@@ -60,6 +63,9 @@ const initialState: GameState = {
   gapsCountAsFail: false,
   gameOverOnInactiveClick: true,
   allowedMouseButton: "left",
+  // sounds
+  clickSound: "none",
+  clickSoundVolume: 40,
   // timer
   timerDuration: 15,
   timeLeft: 15,
@@ -153,6 +159,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, gameOverOnInactiveClick: action.payload };
     case "SET_ALLOWED_MOUSE_BUTTON":
       return { ...state, allowedMouseButton: action.payload };
+    // sounds
+    case "SET_CLICK_SOUND":
+      console.log("setting active sound theme");
+      return { ...state, clickSound: action.payload };
+    case "SET_CLICK_SOUND_VOLUME":
+      const newVolume = Math.max(0, Math.min(100, action.payload));
+      return { ...state, clickSoundVolume: newVolume };
     // timer & scores
     case "SET_TIME_LEFT":
       return { ...state, timeLeft: action.payload };
@@ -205,6 +218,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     };
   });
 
+  //TODO: me no likey this
   useEffect(() => {
     const { gameHistory, ...config } = state;
     localStorage.setItem("gameConfig", JSON.stringify(config));
@@ -218,6 +232,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
     state.gapsCountAsFail,
     state.timerDuration,
     state.allowedMouseButton,
+    state.clickSound,
+    state.clickSoundVolume,
   ]);
 
   useEffect(() => {

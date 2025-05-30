@@ -36,6 +36,9 @@ export type GameState = {
   gapsCountAsFail: boolean;
   gameOverOnInactiveClick: boolean;
   allowedMouseButton: MouseButtonOption;
+  // sounds
+  clickSound: string;
+  clickSoundVolume: number;
   // timer
   timerDuration: number;
   timeLeft: number;

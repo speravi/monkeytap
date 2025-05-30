@@ -11,6 +11,7 @@ import TimerSelector from "../Components/Config/TimerSelector";
 import { useGame } from "../GameContext";
 import ConfirmActionModal from "../Components/ConfirmActionModal";
 import MouseButtonSelector from "../Components/Config/MouseButtonSelector";
+import ClickSoundSelector from "../Components/Config/ClickSoundSelector";
 
 const SettingsPage = () => {
   //TODO: idk if i like this here
@@ -58,6 +59,10 @@ const SettingsPage = () => {
         <div className="mb-4">
           <h2 className="text-xl mb-2">mouse button</h2>
           <MouseButtonSelector />
+        </div>
+        <div className="mb-4">
+          <h2 className="text-xl mb-2">active tile click sound</h2>
+          <ClickSoundSelector />
         </div>
         <div className="mb-4">
           <h2 className="text-xl mb-2">theme</h2>
