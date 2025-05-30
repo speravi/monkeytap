@@ -157,3 +157,28 @@
 html {
   overflow-y: scroll;
 }
+
+/* TODO: Inconsistant slider styling between the browsers */
+.range-slider {
+  -webkit-appearance: none;
+  height: 20px;
+  border-radius: 1rem;
+  background: var(--color-background);
+  cursor: pointer;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 1rem;
+  height: 20px;
+  width: 25px;
+  border: none;
+  background: var(--color-active);
+}
+
+.range-slider::-moz-range-thumb {
+  height: 100%;
+  width: 20%;
+  background: var(--color-active);
+  border: none;
+}

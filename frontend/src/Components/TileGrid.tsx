@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGame } from "../GameContext";
+import { playSound } from "../services/audioService";
 
 type Tile = {
   id: number;
@@ -82,7 +83,7 @@ const TileGrid = () => {
 
     if (clickedTile && clickedTile.isActive) {
       dispatch({ type: "ADD_SCORE", payload: 1 });
-
+      playSound(state.clickSound, state.soundVolume);
       const newTiles = tiles.map((tile) =>
         tile.id === id ? { ...tile, isActive: false } : tile
       );
