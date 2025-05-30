@@ -83,7 +83,7 @@ const TileGrid = () => {
 
     if (clickedTile && clickedTile.isActive) {
       dispatch({ type: "ADD_SCORE", payload: 1 });
-      playSound(state.clickSound, state.soundVolume);
+      playSound(state.clickSound, state.clickSoundVolume);
       const newTiles = tiles.map((tile) =>
         tile.id === id ? { ...tile, isActive: false } : tile
       );
