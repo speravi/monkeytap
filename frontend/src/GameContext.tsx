@@ -8,6 +8,7 @@ import React, {
 import { changeTheme } from "./utils/ThemeSwitcher";
 import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
+import { preloadSoundPack } from "./services/audioService";
 import {
   GameHistoryRecord,
   GameState,
@@ -211,12 +212,43 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const loadedState = storedConfig
       ? { ...initial, ...JSON.parse(storedConfig) }
       : initial;
+
+    // Preload initial/saved sound theme *after* state is determined
+    if (
+      loadedState.activeSoundThemeId &&
+      loadedState.activeSoundThemeId !== "none"
+    ) {
+      preloadSoundPack(loadedState.activeSoundThemeId)
+        .then(() => {
+          /* console.log("Initial sound theme preloaded:", loadedState.activeSoundThemeId); */
+        })
+        .catch((err) =>
+          console.error("Failed to preload initial sound theme:", err)
+        );
+    }
+
     changeTheme(loadedState?.activeTheme);
     return {
       ...loadedState,
       gameHistory: storedHistory ? JSON.parse(storedHistory) : [],
     };
   });
+
+  // Effect to preload sounds when the active sound theme changes
+  useEffect(() => {
+    if (state.clickSound && state.clickSound !== "none") {
+      preloadSoundPack(state.clickSound)
+        .then(() => {
+          console.log("Sound theme changed and preloaded:", state.clickSound);
+        })
+        .catch((err) =>
+          console.error(
+            `Failed to preload sound theme ${state.clickSound}:`,
+            err
+          )
+        );
+    }
+  }, [state.clickSound]);
 
   //TODO: me no likey this
   useEffect(() => {
