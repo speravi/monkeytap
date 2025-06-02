@@ -6,14 +6,14 @@ export interface SoundFile {
   src: string;
 }
 
-export interface SoundTheme {
+export interface SoundPack {
   id: string;
   name: string;
   files: SoundFile[];
   pattern: SoundPattern;
 }
 
-export const SOUNDS: SoundTheme[] = [
+export const SoundPacks: SoundPack[] = [
   {
     id: "none",
     name: "none",
@@ -149,12 +149,12 @@ export interface PatternPlaybackState {
 export const patternPlaybackState: Record<string, PatternPlaybackState> = {};
 
 // Initialize playback state for themes that require it
-SOUNDS.forEach((theme) => {
+SoundPacks.forEach((soundPack) => {
   if (
-    theme.files.length > 0 &&
-    (theme.pattern === "sequential" || theme.pattern === "ping-pong")
+    soundPack.files.length > 0 &&
+    (soundPack.pattern === "sequential" || soundPack.pattern === "ping-pong")
   ) {
-    patternPlaybackState[theme.id] = {
+    patternPlaybackState[soundPack.id] = {
       currentIndex: 0,
       direction: "forward",
     };

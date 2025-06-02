@@ -1,6 +1,6 @@
 import { useGame } from "../../GameContext";
 import { playSound } from "../../services/audioService";
-import { SOUNDS } from "../../soundsConfig";
+import { SoundPacks } from "../../soundsConfig";
 
 const ClickSoundSelector = () => {
   const { state, dispatch } = useGame();
@@ -32,7 +32,7 @@ const ClickSoundSelector = () => {
       </div>
 
       <div className="grid grid-cols-2  lg:grid-cols-3 gap-2">
-        {SOUNDS.map(({ id, name }) => (
+        {SoundPacks.map(({ id, name }) => (
           <button
             key={id}
             onClick={() => handleSoundChange(id)}

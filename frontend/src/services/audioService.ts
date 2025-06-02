@@ -1,45 +1,46 @@
-import { patternPlaybackState, SOUNDS } from "../soundsConfig";
+import { patternPlaybackState, SoundPacks } from "../soundsConfig";
 
-export function playSound(soundId: string, volume: number): void {
-  if (soundId === "none") return; // No sound if "none" is selected
+export function playSound(soundPackId: string, volume: number): void {
+  if (soundPackId === "none") return;
 
-  const click_sound = SOUNDS.find((t) => t.id === soundId);
-  if (!click_sound || click_sound.files.length === 0) {
-    console.log(`Sound theme "${soundId}" not found or has no files.`);
+  const selectedSoundPack = SoundPacks.find((t) => t.id === soundPackId);
+  if (!selectedSoundPack || selectedSoundPack.files.length === 0) {
+    console.log(`Sound pack "${soundPackId}" not found or has no files.`);
     return;
   }
 
-  const playbackState = patternPlaybackState[click_sound.id];
+  const playbackState = patternPlaybackState[selectedSoundPack.id];
   let soundFileSrc: string | undefined;
 
-  switch (click_sound.pattern) {
+  switch (selectedSoundPack.pattern) {
     case "random":
       soundFileSrc =
-        click_sound.files[Math.floor(Math.random() * click_sound.files.length)]
-          .src;
+        selectedSoundPack.files[
+          Math.floor(Math.random() * selectedSoundPack.files.length)
+        ].src;
       break;
     case "sequential":
       if (!playbackState) break;
-      soundFileSrc = click_sound.files[playbackState.currentIndex].src;
+      soundFileSrc = selectedSoundPack.files[playbackState.currentIndex].src;
       playbackState.currentIndex =
-        (playbackState.currentIndex + 1) % click_sound.files.length;
+        (playbackState.currentIndex + 1) % selectedSoundPack.files.length;
       break;
     case "ping-pong":
-      if (!playbackState || click_sound.files.length === 0) break;
-      if (click_sound.files.length === 1) {
+      if (!playbackState || selectedSoundPack.files.length === 0) break;
+      if (selectedSoundPack.files.length === 1) {
         // single file case for ping-pong
-        soundFileSrc = click_sound.files[0].src;
+        soundFileSrc = selectedSoundPack.files[0].src;
         break;
       }
 
-      soundFileSrc = click_sound.files[playbackState.currentIndex].src;
+      soundFileSrc = selectedSoundPack.files[playbackState.currentIndex].src;
       if (playbackState.direction === "forward") {
-        if (playbackState.currentIndex >= click_sound.files.length - 1) {
+        if (playbackState.currentIndex >= selectedSoundPack.files.length - 1) {
           playbackState.direction = "backward";
           // Move to the second to last, or 0 if only two files
           playbackState.currentIndex = Math.max(
             0,
-            click_sound.files.length - 2
+            selectedSoundPack.files.length - 2
           );
         } else {
           playbackState.currentIndex++;
@@ -51,7 +52,7 @@ export function playSound(soundId: string, volume: number): void {
           // Move to the second file, or the last if only two files
           playbackState.currentIndex = Math.min(
             1,
-            click_sound.files.length - 1
+            selectedSoundPack.files.length - 1
           );
         } else {
           playbackState.currentIndex--;
@@ -59,10 +60,10 @@ export function playSound(soundId: string, volume: number): void {
       }
       break;
     case "first":
-      soundFileSrc = click_sound.files[0]?.src;
+      soundFileSrc = selectedSoundPack.files[0]?.src;
       break;
     default:
-      console.warn(`Unknown sound pattern: ${click_sound.pattern}`);
+      console.warn(`Unknown sound pattern: ${selectedSoundPack.pattern}`);
       return;
   }
 
