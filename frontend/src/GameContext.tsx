@@ -15,6 +15,11 @@ import {
   LayoutTypes,
   MouseButtonOption,
 } from "./types/types";
+import {
+  validateLoadedConfig,
+  validateSoundId,
+  validateThemeId,
+} from "./utils/configValidation";
 
 type GameAction =
   | { type: "RESET_TO_DEFAULT" }
@@ -85,6 +90,17 @@ const initialState: GameState = {
   gameHistory: [],
 };
 
+function safeParseJSON(jsonString: string | null, fallback: any = null) {
+  if (!jsonString) return fallback;
+
+  try {
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.log("Failed to parse localStorage data");
+    return fallback;
+  }
+}
+
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "RESET_TO_DEFAULT":
@@ -147,7 +163,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     case "SET_GAME_MODE":
       return { ...state, gameMode: action.payload };
     case "SET_ACTIVE_THEME":
-      return { ...state, activeTheme: action.payload };
+      const validatedTheme = validateThemeId(action.payload, state.activeTheme);
+      return { ...state, activeTheme: validatedTheme };
     case "SET_GAPS_COUNT_AS_FAIL":
       return { ...state, gapsCountAsFail: action.payload };
     case "SET_TIMER_DURATION":
@@ -163,7 +180,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
     // sounds
     case "SET_CLICK_SOUND":
       console.log("setting active sound theme");
-      return { ...state, clickSound: action.payload };
+      const validatedSound = validateSoundId(action.payload, state.clickSound);
+      return { ...state, clickSound: validatedSound };
     case "SET_CLICK_SOUND_VOLUME":
       const newVolume = Math.max(0, Math.min(100, action.payload));
       return { ...state, clickSoundVolume: newVolume };
@@ -207,30 +225,32 @@ const GameContext = createContext<
 export function GameProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(gameReducer, initialState, (initial) => {
     // Load initial state & history from localStorage
-    const storedConfig = localStorage.getItem("gameConfig");
-    const storedHistory = localStorage.getItem("gameHistory");
-    const loadedState = storedConfig
-      ? { ...initial, ...JSON.parse(storedConfig) }
-      : initial;
+    const storedConfigStr = localStorage.getItem("gameConfig");
+    const storedHistoryStr = localStorage.getItem("gameHistory");
 
-    // Preload initial/saved sound theme *after* state is determined
-    if (
-      loadedState.activeSoundThemeId &&
-      loadedState.activeSoundThemeId !== "none"
-    ) {
-      preloadSoundPack(loadedState.activeSoundThemeId)
+    const storedConfig = safeParseJSON(storedConfigStr);
+    const validatedConfig = validateLoadedConfig(storedConfig, initial);
+
+    const loadedState = {
+      ...initial,
+      ...validatedConfig,
+    };
+
+    if (loadedState.clickSound && loadedState.clickSound !== "none") {
+      preloadSoundPack(loadedState.clickSound)
         .then(() => {
-          /* console.log("Initial sound theme preloaded:", loadedState.activeSoundThemeId); */
+          console.log("Initial sound theme preloaded:", loadedState.clickSound);
         })
         .catch((err) =>
           console.error("Failed to preload initial sound theme:", err)
         );
     }
 
-    changeTheme(loadedState?.activeTheme);
+    changeTheme(loadedState.activeTheme);
+
     return {
       ...loadedState,
-      gameHistory: storedHistory ? JSON.parse(storedHistory) : [],
+      gameHistory: safeParseJSON(storedHistoryStr, []),
     };
   });
 
