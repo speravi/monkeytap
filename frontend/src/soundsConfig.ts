@@ -1,5 +1,3 @@
-// src/soundsConfig.ts
-
 export type SoundPattern = "random" | "sequential" | "ping-pong" | "first";
 
 export interface SoundFile {
@@ -30,6 +28,16 @@ export const SoundPacks: SoundPack[] = [
       { src: `${import.meta.env.BASE_URL}sounds/pop/pop_3.wav` },
     ],
     pattern: "random",
+  },
+  {
+    id: "test",
+    name: "test",
+    files: [
+      { src: `${import.meta.env.BASE_URL}sounds/test/test_0.wav` },
+      // { src: `${import.meta.env.BASE_URL}sounds/test/test_1.wav` },
+      // { src: `${import.meta.env.BASE_URL}sounds/test/test_2.wav` },
+    ],
+    pattern: "sequential",
   },
   {
     id: "guitar_notes",

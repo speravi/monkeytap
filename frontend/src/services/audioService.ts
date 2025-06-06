@@ -1,38 +1,81 @@
 import { patternPlaybackState, SoundPacks } from "../soundsConfig";
 
-const preloadedAudioCache: Record<string, HTMLAudioElement> = {};
+const AUDIO_POOL_SIZE = 10;
 
-export function preloadSoundPack(soundPackId: string): Promise<void[]> {
-  const theme = SoundPacks.find((t) => t.id === soundPackId);
-  if (!theme || theme.id === "none") {
-    return Promise.resolve([]);
+// The cache will now store an object containing a pool of audio elements and a counter.
+const preloadedAudioCache: Record<
+  string,
+  {
+    pool: HTMLAudioElement[];
+    counter: number;
   }
-  const preloadPromises = theme.files.map((file) => {
-    return new Promise<void>((resolve, reject) => {
-      if (!preloadedAudioCache[file.src]) {
-        const audio = new Audio(file.src);
-        // Event 'canplaythrough' indicates the browser believes it can play the audio through without stopping for buffering
-        audio.oncanplaythrough = () => {
-          preloadedAudioCache[file.src] = audio;
-          resolve();
-        };
-        audio.onerror = (e) => {
-          console.error(`Error preloading sound: ${file.src}`, e);
-          reject(new Error(`Failed to load ${file.src}`));
-        };
-        audio.load(); // Explicitly tell the browser to load the audio file
-      } else {
-        resolve(); // Already preloaded
-      }
-    });
-  });
+> = {};
 
-  return Promise.all(preloadPromises);
+// This function now preloads a POOL of audio elements for a single sound file.
+function preloadAudioFile(filePath: string): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    // Check if already in cache or if filePath is empty/null
+    if (!filePath || preloadedAudioCache[filePath]) {
+      resolve(); // Already preloaded or nothing to preload
+      return;
+    }
+
+    const loadPromises: Promise<HTMLAudioElement>[] = [];
+    const audioPool: HTMLAudioElement[] = [];
+
+    for (let i = 0; i < AUDIO_POOL_SIZE; i++) {
+      const audio = new Audio(filePath);
+      audioPool.push(audio);
+      const promise = new Promise<HTMLAudioElement>(
+        (resolvePromise, rejectPromise) => {
+          audio.oncanplaythrough = () => resolvePromise(audio);
+          audio.onerror = (e) => {
+            console.error(`Error preloading sound: ${filePath}`, e);
+            rejectPromise(new Error(`Failed to load ${filePath}`));
+          };
+          audio.load();
+        }
+      );
+      loadPromises.push(promise);
+    }
+
+    Promise.all(loadPromises)
+      .then((loadedAudios) => {
+        // Once all audio elements for this sound are loaded, add them to the cache.
+        preloadedAudioCache[filePath] = {
+          pool: loadedAudios,
+          counter: 0, // Initialize a counter to cycle through the pool.
+        };
+        resolve();
+      })
+      .catch((error) => {
+        // If any of the audio files in the pool fail to load, reject the whole process for this file.
+        reject(error);
+      });
+  });
 }
 
+export function preloadAllSoundPacks(): Promise<(void | Error)[][]> {
+  const allThemesPreloadPromises = SoundPacks.map((clickSound) => {
+    if (
+      clickSound.id === "none" ||
+      !clickSound.files ||
+      clickSound.files.length === 0
+    ) {
+      return Promise.resolve<void[]>([]);
+    }
+
+    const clickSoundFilePromises = clickSound.files.map((file) =>
+      preloadAudioFile(file.src).catch((error) => error)
+    );
+    return Promise.all(clickSoundFilePromises);
+  });
+
+  return Promise.all(allThemesPreloadPromises.map((p) => p.catch((e) => e)));
+}
 export function playSound(soundPackId: string, volume: number): void {
   if (soundPackId === "none") return;
-
+  console.log("playing sound at volume:", volume);
   const selectedSoundPack = SoundPacks.find((t) => t.id === soundPackId);
   if (!selectedSoundPack || selectedSoundPack.files.length === 0) {
     console.log(`Sound pack "${soundPackId}" not found or has no files.`);
@@ -98,14 +141,20 @@ export function playSound(soundPackId: string, volume: number): void {
   }
 
   if (soundFileSrc) {
-    const audio = preloadedAudioCache[soundFileSrc];
-    if (audio) {
-      audio.currentTime = 0; // Crucial: Rewind the sound to the beginning
-      audio.volume = Math.max(0, Math.min(1, volume));
-      // .play() returns a Promise, which should be handled
+    // Retrieve the entire pool object for the selected sound file.
+    const audioPoolData = preloadedAudioCache[soundFileSrc];
+
+    if (audioPoolData && audioPoolData.pool.length > 0) {
+      // Get the next available audio element from the pool using the counter.
+      const audio = audioPoolData.pool[audioPoolData.counter];
+
+      // Increment the counter for the next playback, wrapping around if it reaches the end of the pool.
+      audioPoolData.counter = (audioPoolData.counter + 1) % AUDIO_POOL_SIZE;
+
+      audio.currentTime = 0; // Rewind the sound to the beginning.
+      audio.volume = Math.max(0, Math.min(1, volume / 100)); // GameContext stores volume as 0-100, HTMLAudioElement needs 0-1.
+
       audio.play().catch((error) => {
-        // Common error: "The play() request was interrupted..." if you click very fast.
-        // This is usually fine for click sounds as you just want the latest one.
         if (error.name !== "AbortError") {
           console.error(
             `Error playing preloaded sound "${soundFileSrc}":`,
@@ -114,20 +163,9 @@ export function playSound(soundPackId: string, volume: number): void {
         }
       });
     } else {
-      // Fallback or warning: This means the sound wasn't preloaded for some reason.
       console.warn(
-        `Sound "${soundFileSrc}" not found in preload cache. Attempting to play directly (may cause lag).`
+        `Sound "${soundFileSrc}" not played: not found in preload cache.`
       );
-      const fallbackAudio = new Audio(soundFileSrc);
-      fallbackAudio.volume = Math.max(0, Math.min(1, volume));
-      fallbackAudio
-        .play()
-        .catch((error) =>
-          console.error(
-            `Error playing fallback sound "${soundFileSrc}":`,
-            error
-          )
-        );
     }
   }
 }
