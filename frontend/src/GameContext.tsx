@@ -8,7 +8,7 @@ import React, {
 import { changeTheme } from "./utils/ThemeSwitcher";
 import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
-import { preloadSoundPack } from "./services/audioService";
+import { preloadAllSoundPacks } from "./services/audioService";
 import {
   GameHistoryRecord,
   GameState,
@@ -184,6 +184,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, clickSound: validatedSound };
     case "SET_CLICK_SOUND_VOLUME":
       const newVolume = Math.max(0, Math.min(100, action.payload));
+      console.log("volume:", newVolume);
       return { ...state, clickSoundVolume: newVolume };
     // timer & scores
     case "SET_TIME_LEFT":
@@ -236,15 +237,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ...validatedConfig,
     };
 
-    if (loadedState.clickSound && loadedState.clickSound !== "none") {
-      preloadSoundPack(loadedState.clickSound)
-        .then(() => {
-          console.log("Initial sound theme preloaded:", loadedState.clickSound);
-        })
-        .catch((err) =>
-          console.error("Failed to preload initial sound theme:", err)
+    preloadAllSoundPacks()
+      .then(() => {
+        // console.log("All sound themes have been processed for preloading.");
+      })
+      .catch((err) => {
+        // This catch is for an error in the structure of preloadAllSoundThemes itself,
+        // individual file errors are handled within.
+        console.error(
+          "A critical error occurred during the sound preloading process:",
+          err
         );
-    }
+      });
 
     changeTheme(loadedState.activeTheme);
 
@@ -253,22 +257,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       gameHistory: safeParseJSON(storedHistoryStr, []),
     };
   });
-
-  // Effect to preload sounds when the active sound theme changes
-  useEffect(() => {
-    if (state.clickSound && state.clickSound !== "none") {
-      preloadSoundPack(state.clickSound)
-        .then(() => {
-          console.log("Sound theme changed and preloaded:", state.clickSound);
-        })
-        .catch((err) =>
-          console.error(
-            `Failed to preload sound theme ${state.clickSound}:`,
-            err
-          )
-        );
-    }
-  }, [state.clickSound]);
 
   //TODO: me no likey this
   useEffect(() => {
