@@ -6,8 +6,6 @@ const ClickSoundSelector = () => {
   const { state, dispatch } = useGame();
 
   const handleSoundChange = (clickSound: string) => {
-    console.log("in state:", state.clickSound);
-    console.log("just clicked:", clickSound);
     playSound(clickSound, state.clickSoundVolume);
     dispatch({ type: "SET_CLICK_SOUND", payload: clickSound });
   };
@@ -21,13 +19,14 @@ const ClickSoundSelector = () => {
         <input
           type="range"
           min="0"
-          max="100"
+          max="1"
+          step="0.01"
           value={state.clickSoundVolume}
           onChange={(e) => handleVolumeChange(Number(e.target.value))}
           className="range-slider"
         />
         <label className="block text-sm font-medium w-full">
-          {state.clickSoundVolume}%
+          {Math.round(state.clickSoundVolume * 100)}%
         </label>
       </div>
 
