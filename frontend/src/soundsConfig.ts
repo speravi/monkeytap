@@ -30,16 +30,6 @@ export const SoundPacks: SoundPack[] = [
     pattern: "random",
   },
   {
-    id: "test",
-    name: "test",
-    files: [
-      { src: `${import.meta.env.BASE_URL}sounds/test/test_0.wav` },
-      // { src: `${import.meta.env.BASE_URL}sounds/test/test_1.wav` },
-      // { src: `${import.meta.env.BASE_URL}sounds/test/test_2.wav` },
-    ],
-    pattern: "sequential",
-  },
-  {
     id: "guitar_notes",
     name: "guitar notes",
     files: [
