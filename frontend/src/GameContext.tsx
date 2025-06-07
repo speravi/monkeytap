@@ -71,7 +71,7 @@ const initialState: GameState = {
   allowedMouseButton: "left",
   // sounds
   clickSound: "none",
-  clickSoundVolume: 40,
+  clickSoundVolume: 0,
   // timer
   timerDuration: 15,
   timeLeft: 15,
@@ -179,12 +179,10 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, allowedMouseButton: action.payload };
     // sounds
     case "SET_CLICK_SOUND":
-      console.log("setting active sound theme");
       const validatedSound = validateSoundId(action.payload, state.clickSound);
       return { ...state, clickSound: validatedSound };
     case "SET_CLICK_SOUND_VOLUME":
       const newVolume = Math.max(0, Math.min(100, action.payload));
-      console.log("volume:", newVolume);
       return { ...state, clickSoundVolume: newVolume };
     // timer & scores
     case "SET_TIME_LEFT":

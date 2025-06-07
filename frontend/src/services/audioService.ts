@@ -75,7 +75,6 @@ export function preloadAllSoundPacks(): Promise<(void | Error)[][]> {
 }
 export function playSound(soundPackId: string, volume: number): void {
   if (soundPackId === "none") return;
-  console.log("playing sound at volume:", volume);
   const selectedSoundPack = SoundPacks.find((t) => t.id === soundPackId);
   if (!selectedSoundPack || selectedSoundPack.files.length === 0) {
     console.log(`Sound pack "${soundPackId}" not found or has no files.`);
@@ -152,7 +151,7 @@ export function playSound(soundPackId: string, volume: number): void {
       audioPoolData.counter = (audioPoolData.counter + 1) % AUDIO_POOL_SIZE;
 
       audio.currentTime = 0; // Rewind the sound to the beginning.
-      audio.volume = Math.max(0, Math.min(1, volume / 100)); // GameContext stores volume as 0-100, HTMLAudioElement needs 0-1.
+      audio.volume = volume;
 
       audio.play().catch((error) => {
         if (error.name !== "AbortError") {
