@@ -8,7 +8,7 @@ import React, {
 import { changeTheme } from "./utils/ThemeSwitcher";
 import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
-import { preloadAllSoundPacks } from "./services/audioService";
+// import { preloadAllSoundPacks } from "./services/audioService";
 import {
   GameHistoryRecord,
   GameState,
@@ -235,18 +235,18 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ...validatedConfig,
     };
 
-    preloadAllSoundPacks()
-      .then(() => {
-        // console.log("All sound themes have been processed for preloading.");
-      })
-      .catch((err) => {
-        // This catch is for an error in the structure of preloadAllSoundThemes itself,
-        // individual file errors are handled within.
-        console.error(
-          "A critical error occurred during the sound preloading process:",
-          err
-        );
-      });
+    // preloadAllSoundPacks()
+    //   .then(() => {
+    //     // console.log("All sound themes have been processed for preloading.");
+    //   })
+    //   .catch((err) => {
+    //     // This catch is for an error in the structure of preloadAllSoundThemes itself,
+    //     // individual file errors are handled within.
+    //     console.error(
+    //       "A critical error occurred during the sound preloading process:",
+    //       err
+    //     );
+    //   });
 
     changeTheme(loadedState.activeTheme);
 
