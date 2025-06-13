@@ -1,5 +1,3 @@
-export type SoundPattern = "random" | "sequential" | "ping-pong" | "first";
-
 export interface SoundFile {
   src: string;
 }
@@ -8,7 +6,7 @@ export interface SoundPack {
   id: string;
   name: string;
   files: SoundFile[];
-  pattern: SoundPattern;
+  pattern?: string;
 }
 
 export const SoundPacks: SoundPack[] = [
@@ -16,7 +14,6 @@ export const SoundPacks: SoundPack[] = [
     id: "none",
     name: "none",
     files: [],
-    pattern: "first",
   },
   {
     id: "pop",
@@ -49,7 +46,7 @@ export const SoundPacks: SoundPack[] = [
         }/sounds/guitar_notes/guitar_notes_2.wav`,
       },
     ],
-    pattern: "ping-pong", // Plays 0, 1, 2, 3, 2, 1, 0...
+    pattern: "0,1,0,2",
   },
   {
     id: "keyboard",
@@ -82,7 +79,7 @@ export const SoundPacks: SoundPack[] = [
       { src: `${import.meta.env.BASE_URL}sounds/clack/clack_2.wav` },
       { src: `${import.meta.env.BASE_URL}sounds/clack/clack_3.wav` },
     ],
-    pattern: "sequential", // Plays 0, 1, 2, 3, 0, 1, 2, 3...
+    pattern: "random",
   },
   {
     id: "mouse_click",
@@ -104,7 +101,7 @@ export const SoundPacks: SoundPack[] = [
         src: `${import.meta.env.BASE_URL}sounds/mouse_click/mouse_click_4.wav`,
       },
     ],
-    pattern: "sequential", // Plays 0, 1, 2, 3, 0, 1, 2, 3...
+    pattern: "random",
   },
   {
     id: "finger_snap",
@@ -123,7 +120,7 @@ export const SoundPacks: SoundPack[] = [
         src: `${import.meta.env.BASE_URL}sounds/finger_snap/finger_snap_3.wav`,
       },
     ],
-    pattern: "ping-pong",
+    pattern: "random",
   },
   {
     id: "sticks",
@@ -134,27 +131,6 @@ export const SoundPacks: SoundPack[] = [
       { src: `${import.meta.env.BASE_URL}sounds/sticks/sticks_2.wav` },
       { src: `${import.meta.env.BASE_URL}sounds/sticks/sticks_3.wav` },
     ],
-    pattern: "ping-pong",
+    pattern: "sequential",
   },
 ];
-
-// This object will store the current playback state (e.g., index, direction)
-// for patterns that need it. It will be managed by the audio service.
-export interface PatternPlaybackState {
-  currentIndex: number;
-  direction?: "forward" | "backward"; // For 'ping-pong'
-}
-export const patternPlaybackState: Record<string, PatternPlaybackState> = {};
-
-// Initialize playback state for themes that require it
-SoundPacks.forEach((soundPack) => {
-  if (
-    soundPack.files.length > 0 &&
-    (soundPack.pattern === "sequential" || soundPack.pattern === "ping-pong")
-  ) {
-    patternPlaybackState[soundPack.id] = {
-      currentIndex: 0,
-      direction: "forward",
-    };
-  }
-});
