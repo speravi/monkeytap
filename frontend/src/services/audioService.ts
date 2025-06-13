@@ -1,170 +1,167 @@
-import { patternPlaybackState, SoundPacks } from "../soundsConfig";
+import { SoundPacks, SoundPack } from "../soundsConfig";
 
-const AUDIO_POOL_SIZE = 10;
+let audioContext: AudioContext | null = null;
+const audioBuffers: Record<string, AudioBuffer[]> = {};
+const currentIndex: Record<string, number> = {};
 
-// The cache will now store an object containing a pool of audio elements and a counter.
-const preloadedAudioCache: Record<
-  string,
-  {
-    pool: HTMLAudioElement[];
-    counter: number;
+// Initialize AudioContext (must be done after user interaction)
+function initAudioContext(): void {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext ||
+      (window as any).webkitAudioContext)();
   }
-> = {};
-
-// This function now preloads a POOL of audio elements for a single sound file.
-function preloadAudioFile(filePath: string): Promise<void> {
-  return new Promise<void>((resolve, reject) => {
-    // Check if already in cache or if filePath is empty/null
-    if (!filePath || preloadedAudioCache[filePath]) {
-      resolve(); // Already preloaded or nothing to preload
-      return;
-    }
-
-    const loadPromises: Promise<HTMLAudioElement>[] = [];
-    const audioPool: HTMLAudioElement[] = [];
-
-    for (let i = 0; i < AUDIO_POOL_SIZE; i++) {
-      const audio = new Audio(filePath);
-      audioPool.push(audio);
-      const promise = new Promise<HTMLAudioElement>(
-        (resolvePromise, rejectPromise) => {
-          audio.oncanplaythrough = () => resolvePromise(audio);
-          audio.onerror = (e) => {
-            console.error(`Error preloading sound: ${filePath}`, e);
-            rejectPromise(new Error(`Failed to load ${filePath}`));
-          };
-          audio.load();
-        }
-      );
-      loadPromises.push(promise);
-    }
-
-    Promise.all(loadPromises)
-      .then((loadedAudios) => {
-        // Once all audio elements for this sound are loaded, add them to the cache.
-        preloadedAudioCache[filePath] = {
-          pool: loadedAudios,
-          counter: 0, // Initialize a counter to cycle through the pool.
-        };
-        resolve();
-      })
-      .catch((error) => {
-        // If any of the audio files in the pool fail to load, reject the whole process for this file.
-        reject(error);
-      });
-  });
 }
 
-export function preloadAllSoundPacks(): Promise<(void | Error)[][]> {
-  const allThemesPreloadPromises = SoundPacks.map((clickSound) => {
-    if (
-      clickSound.id === "none" ||
-      !clickSound.files ||
-      clickSound.files.length === 0
-    ) {
-      return Promise.resolve<void[]>([]);
+async function preloadSoundPack(pack: SoundPack): Promise<void> {
+  if (pack.id === "none") return;
+
+  // Initialize AudioContext if not already done
+  initAudioContext();
+
+  // Initialize index
+  currentIndex[pack.id] = 0;
+
+  // Create array to hold audio buffers
+  audioBuffers[pack.id] = [];
+
+  // Load each file
+  for (let i = 0; i < pack.files.length; i++) {
+    const file = pack.files[i];
+
+    try {
+      const audioBuffer = await loadAudioBuffer(file.src);
+      audioBuffers[pack.id].push(audioBuffer);
+      console.log(`Loaded: ${file.src}`);
+    } catch (error) {
+      console.error(`Failed to load: ${file.src}`, error);
     }
-
-    const clickSoundFilePromises = clickSound.files.map((file) =>
-      preloadAudioFile(file.src).catch((error) => error)
-    );
-    return Promise.all(clickSoundFilePromises);
-  });
-
-  return Promise.all(allThemesPreloadPromises.map((p) => p.catch((e) => e)));
+  }
 }
+
+async function loadAudioBuffer(src: string): Promise<AudioBuffer> {
+  if (!audioContext) {
+    throw new Error("AudioContext not initialized");
+  }
+
+  // Fetch the audio file as array buffer
+  const response = await fetch(src);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${src}: ${response.statusText}`);
+  }
+
+  const arrayBuffer = await response.arrayBuffer();
+
+  // Decode the audio data
+  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+  return audioBuffer;
+}
+
+// Get the next sound index based on the pattern
+function getNextSoundIndex(soundPackId: string): number {
+  const pack = SoundPacks.find((p) => p.id === soundPackId);
+  if (!pack || !audioBuffers[soundPackId]) {
+    return 0;
+  }
+
+  const buffers = audioBuffers[soundPackId];
+  const pattern = pack.pattern || "sequential"; // Default to sequential if no pattern
+
+  let index: number;
+
+  switch (pattern) {
+    case "random":
+      index = Math.floor(Math.random() * buffers.length);
+      break;
+
+    case "sequential":
+      index = currentIndex[soundPackId];
+      currentIndex[soundPackId] =
+        (currentIndex[soundPackId] + 1) % buffers.length;
+      break;
+
+    default:
+      // Handle custom patterns
+      if (typeof pattern === "string" && pattern.includes(",")) {
+        const patternArray = pattern
+          .split(",")
+          .map((num) => parseInt(num.trim()));
+        const patternIndex = currentIndex[soundPackId] % patternArray.length;
+        index = patternArray[patternIndex];
+        // Make sure the index is valid
+        index = Math.min(index, buffers.length - 1);
+        currentIndex[soundPackId] =
+          (currentIndex[soundPackId] + 1) % patternArray.length;
+      } else {
+        // Fallback to sequential for unknown patterns
+        index = currentIndex[soundPackId];
+        currentIndex[soundPackId] =
+          (currentIndex[soundPackId] + 1) % buffers.length;
+      }
+      break;
+  }
+
+  return index;
+}
+
+export async function preloadAllSoundPacks(): Promise<void> {
+  console.log("Starting to preload all sound packs...");
+  for (const pack of SoundPacks) {
+    await preloadSoundPack(pack);
+  }
+  console.log("All sound packs preloaded");
+}
+
 export function playSound(soundPackId: string, volume: number): void {
   if (soundPackId === "none") return;
-  const selectedSoundPack = SoundPacks.find((t) => t.id === soundPackId);
-  if (!selectedSoundPack || selectedSoundPack.files.length === 0) {
-    console.log(`Sound pack "${soundPackId}" not found or has no files.`);
+
+  if (!audioContext) {
+    console.warn("AudioContext not initialized");
     return;
   }
 
-  const playbackState = patternPlaybackState[selectedSoundPack.id];
-  let soundFileSrc: string | undefined;
-
-  switch (selectedSoundPack.pattern) {
-    case "random":
-      soundFileSrc =
-        selectedSoundPack.files[
-          Math.floor(Math.random() * selectedSoundPack.files.length)
-        ].src;
-      break;
-    case "sequential":
-      if (!playbackState) break;
-      soundFileSrc = selectedSoundPack.files[playbackState.currentIndex].src;
-      playbackState.currentIndex =
-        (playbackState.currentIndex + 1) % selectedSoundPack.files.length;
-      break;
-    case "ping-pong":
-      if (!playbackState || selectedSoundPack.files.length === 0) break;
-      if (selectedSoundPack.files.length === 1) {
-        // single file case for ping-pong
-        soundFileSrc = selectedSoundPack.files[0].src;
-        break;
-      }
-
-      soundFileSrc = selectedSoundPack.files[playbackState.currentIndex].src;
-      if (playbackState.direction === "forward") {
-        if (playbackState.currentIndex >= selectedSoundPack.files.length - 1) {
-          playbackState.direction = "backward";
-          // Move to the second to last, or 0 if only two files
-          playbackState.currentIndex = Math.max(
-            0,
-            selectedSoundPack.files.length - 2
-          );
-        } else {
-          playbackState.currentIndex++;
-        }
-      } else {
-        // 'backward'
-        if (playbackState.currentIndex <= 0) {
-          playbackState.direction = "forward";
-          // Move to the second file, or the last if only two files
-          playbackState.currentIndex = Math.min(
-            1,
-            selectedSoundPack.files.length - 1
-          );
-        } else {
-          playbackState.currentIndex--;
-        }
-      }
-      break;
-    case "first":
-      soundFileSrc = selectedSoundPack.files[0]?.src;
-      break;
-    default:
-      console.warn(`Unknown sound pattern: ${selectedSoundPack.pattern}`);
-      return;
+  // Resume AudioContext if it's suspended (browser autoplay policy)
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
   }
 
-  if (soundFileSrc) {
-    // Retrieve the entire pool object for the selected sound file.
-    const audioPoolData = preloadedAudioCache[soundFileSrc];
+  const buffers = audioBuffers[soundPackId];
+  if (!buffers || buffers.length === 0) {
+    console.warn(`No audio loaded for sound pack: ${soundPackId}`);
+    return;
+  }
 
-    if (audioPoolData && audioPoolData.pool.length > 0) {
-      // Get the next available audio element from the pool using the counter.
-      const audio = audioPoolData.pool[audioPoolData.counter];
+  // Get the index based on the pattern
+  const index = getNextSoundIndex(soundPackId);
+  const buffer = buffers[index];
+  // Create a new source node for this playback
+  const source = audioContext.createBufferSource();
+  source.buffer = buffer;
 
-      // Increment the counter for the next playback, wrapping around if it reaches the end of the pool.
-      audioPoolData.counter = (audioPoolData.counter + 1) % AUDIO_POOL_SIZE;
+  // Create gain node for volume control
+  const gainNode = audioContext.createGain();
+  gainNode.gain.value = volume;
 
-      audio.currentTime = 0; // Rewind the sound to the beginning.
-      audio.volume = volume;
+  // Connect: source -> gain -> destination
+  source.connect(gainNode);
+  gainNode.connect(audioContext.destination);
 
-      audio.play().catch((error) => {
-        if (error.name !== "AbortError") {
-          console.error(
-            `Error playing preloaded sound "${soundFileSrc}":`,
-            error
-          );
-        }
-      });
-    } else {
-      console.warn(
-        `Sound "${soundFileSrc}" not played: not found in preload cache.`
-      );
-    }
+  // Start playback immediately
+  source.start(0);
+
+  // Note: BufferSource nodes are one-time use and will be garbage collected
+  // after playback finishes, so no cleanup needed
+}
+
+// Initialize audio context on first user interaction
+export function initializeAudio(): void {
+  initAudioContext();
+}
+
+// Clean up resources when needed
+export function cleanup(): void {
+  if (audioContext) {
+    audioContext.close();
+    audioContext = null;
   }
 }
