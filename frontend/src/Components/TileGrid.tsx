@@ -1,10 +1,30 @@
 import { useState, useEffect } from "react";
 import { useGame } from "../GameContext";
 import { playSound } from "../services/audioService";
+import { MouseButtonOption } from "../types/types";
 
 type Tile = {
   id: number;
   isActive: boolean;
+};
+
+const isAllowedMouseClick = (
+  event: React.MouseEvent,
+  allowedButton: MouseButtonOption
+): boolean => {
+  const isLeftClick = event.button === 0;
+  const isRightClick = event.button === 2;
+
+  switch (allowedButton) {
+    case "left":
+      return isLeftClick;
+    case "right":
+      return isRightClick;
+    case "both":
+      return isLeftClick || isRightClick;
+    default:
+      return false;
+  }
 };
 
 const TileGrid = () => {
@@ -57,20 +77,10 @@ const TileGrid = () => {
 
   const handleTileMouseDown = (
     id: number,
-    event: React.MouseEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLButtonElement>
   ) => {
-    if (state.gameOver) return;
-
-    // TODO: changes needed, duplicate the logic from handleGridClick to check for allowed mouse button
-    const isLeftClick = event.button === 0;
-    const isRightClick = event.button === 2; // 0 = left, 1 = middle, 2 = right
-    const isAllowedClick =
-      (state.allowedMouseButton === "left" && isLeftClick) ||
-      (state.allowedMouseButton === "right" && isRightClick) ||
-      (state.allowedMouseButton === "both" && (isLeftClick || isRightClick));
-
-    if (!isAllowedClick) {
-      return; // Ignore the click if the button is not allowed
+    if (state.gameOver || !isAllowedMouseClick(e, state.allowedMouseButton)) {
+      return;
     }
 
     if (!state.gameStarted) {
@@ -109,17 +119,8 @@ const TileGrid = () => {
   };
 
   const handleGridClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // TODO:
-    const isLeftClick = e.button === 0;
-    const isRightClick = e.button === 2;
-
-    const isAllowedClick =
-      (state.allowedMouseButton === "left" && isLeftClick) ||
-      (state.allowedMouseButton === "right" && isRightClick) ||
-      (state.allowedMouseButton === "both" && (isLeftClick || isRightClick));
-
-    if (!isAllowedClick) {
-      return; // Ignore the click if the button is not allowed
+    if (state.gameOver || !isAllowedMouseClick(e, state.allowedMouseButton)) {
+      return;
     }
 
     if (state.gameOver || !state.gapsCountAsFail) return;
