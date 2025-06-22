@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGame } from "../GameContext";
 import { playSound } from "../services/audioService";
 import { MouseButtonOption } from "../types/types";
+import CustomCursor from "./CustomCursor";
 
 type Tile = {
   id: number;
@@ -31,7 +32,7 @@ const TileGrid = () => {
   const { state, dispatch } = useGame();
   const [tiles, setTiles] = useState<Tile[]>([]);
   const [activeCount, setActiveCount] = useState(0);
-
+  const gameGridRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     initializeTiles();
   }, [state.gridSize, state.layoutType, state.activeTileCount]);
@@ -160,7 +161,8 @@ const TileGrid = () => {
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto">
+    <div ref={gameGridRef} className="w-full max-w-xl mx-auto">
+      <CustomCursor targetRef={gameGridRef} />
       <div
         className={`${
           state.layoutType === "columns" ? "flex flex-col" : "grid"
@@ -169,13 +171,19 @@ const TileGrid = () => {
         onMouseDown={handleGridClick}
         onContextMenu={(e) => e.preventDefault()}
       >
+        <CustomCursor targetRef={gameGridRef} />
         {tiles.map((tile) => (
           <button
             key={tile.id}
-            className={`w-full h-full transition-colors rounded-md cursor-default 
-               ${tile.isActive ? `bg-active` : `bg-inactive`} ${
-              state.gameOver ? "cursor-not-allowed" : "cursor-pointer"
-            } ${state.layoutType === "columns" ? "flex-1" : ""}`}
+            // not sure about transition-colors, make it an togglable option?
+            // className={`w-full h-full transition-colors rounded-md cursor-default
+            //    ${tile.isActive ? `bg-active` : `bg-inactive`}  ${
+            //   state.layoutType === "columns" ? "flex-1" : ""
+            // }`}
+            className={`w-full h-full transition-colors rounded-md cursor-default
+               ${tile.isActive ? `bg-active` : `bg-inactive`}  ${
+              state.layoutType === "columns" ? "flex-1" : ""
+            }`}
             onMouseDown={(e) => {
               e.stopPropagation(); // Prevent the grid click handler from firing
               handleTileMouseDown(tile.id, e);

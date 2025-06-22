@@ -19,18 +19,14 @@ const ThemeSelector = () => {
           onClick={() => handleThemeChange(id)}
           style={{
             backgroundColor: colors.background,
-            ...(activeTheme === id && {
-              outlineColor: colors.active,
-              outlineWidth: "2px",
-              outlineStyle: "solid",
-            }),
           }}
-          className={`
+          className={`      
             px-4 py-2 rounded-lg
             transition-all duration-200
             flex items-center gap-2
             hover:scale-105 w-full
             outline outline-0
+            ${activeTheme === id ? "outline-2 outline-active" : ""}
           `}
         >
           <span style={{ color: colors.active }}>{name}</span>

@@ -21,6 +21,7 @@ export type GameHistoryRecord = {
 export type GameModes = "continuous" | "batch";
 export type LayoutTypes = "grid" | "rows" | "columns";
 export type MouseButtonOption = "left" | "right" | "both";
+export type CursorType = "default" | "cross" | "dot";
 
 export type GameState = {
   // game states
@@ -36,6 +37,9 @@ export type GameState = {
   gapsCountAsFail: boolean;
   gameOverOnInactiveClick: boolean;
   allowedMouseButton: MouseButtonOption;
+  activeCursor: CursorType;
+  cursorSize: number;
+  cursorColor: string;
   // sounds
   clickSound: string;
   clickSoundVolume: number;

@@ -10,6 +10,7 @@ import { calculateAverageCPM } from "./utils/CPMCalculator";
 import { createGameHistoryRecord } from "./utils/gameUtils";
 import { preloadAllSoundPacks } from "./services/audioService";
 import {
+  CursorType,
   GameHistoryRecord,
   GameState,
   LayoutTypes,
@@ -37,6 +38,9 @@ type GameAction =
   | { type: "SET_GAPS_COUNT_AS_FAIL"; payload: boolean }
   | { type: "SET_GAME_OVER_ON_INACTIVE_CLICK"; payload: boolean }
   | { type: "SET_ALLOWED_MOUSE_BUTTON"; payload: MouseButtonOption }
+  | { type: "SET_ACTIVE_CURSOR"; payload: CursorType }
+  | { type: "SET_CURSOR_SIZE"; payload: number }
+  | { type: "SET_CURSOR_COLOR"; payload: string }
   // sounds
   | { type: "SET_CLICK_SOUND"; payload: string }
   | { type: "SET_CLICK_SOUND_VOLUME"; payload: number }
@@ -69,6 +73,9 @@ const initialState: GameState = {
   gapsCountAsFail: false,
   gameOverOnInactiveClick: true,
   allowedMouseButton: "left",
+  activeCursor: "default",
+  cursorSize: 24,
+  cursorColor: "#FFFFFF",
   // sounds
   clickSound: "none",
   clickSoundVolume: 0,
@@ -177,6 +184,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, gameOverOnInactiveClick: action.payload };
     case "SET_ALLOWED_MOUSE_BUTTON":
       return { ...state, allowedMouseButton: action.payload };
+    case "SET_ACTIVE_CURSOR":
+      return { ...state, activeCursor: action.payload };
+    case "SET_CURSOR_SIZE":
+      return { ...state, cursorSize: action.payload };
+    case "SET_CURSOR_COLOR":
+      return { ...state, cursorColor: action.payload };
     // sounds
     case "SET_CLICK_SOUND":
       const validatedSound = validateSoundId(action.payload, state.clickSound);
@@ -273,6 +286,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
     state.allowedMouseButton,
     state.clickSound,
     state.clickSoundVolume,
+    state.activeCursor,
+    state.cursorSize,
+    state.cursorColor,
   ]);
 
   useEffect(() => {
