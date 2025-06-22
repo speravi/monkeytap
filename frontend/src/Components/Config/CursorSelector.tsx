@@ -7,7 +7,6 @@ const CursorSelector = () => {
   const { state, dispatch } = useGame();
   const { activeCursor, cursorSize, cursorColor } = state;
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [previewCursor, setPreviewCursor] = useState<CursorType | null>(null);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   const handleCursorChange = (cursorId: CursorType) => {
@@ -23,7 +22,6 @@ const CursorSelector = () => {
 
   const handleCursorHover = (cursorId: CursorType) => {
     if (cursorId !== "default") {
-      setPreviewCursor(cursorId);
       document.body.style.cursor = "none";
 
       // Create temporary cursor element for preview
@@ -58,7 +56,6 @@ const CursorSelector = () => {
   };
 
   const handleCursorLeave = () => {
-    setPreviewCursor(null);
     const tempCursor = document.getElementById("temp-cursor-preview");
     if (tempCursor && (tempCursor as any)._cleanup) {
       (tempCursor as any)._cleanup();
