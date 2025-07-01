@@ -112,7 +112,11 @@ function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case "RESET_TO_DEFAULT":
       changeTheme(initialState.activeTheme);
-      return { ...initialState, bestScore: state.bestScore };
+      return {
+        ...initialState,
+        bestScore: state.bestScore,
+        gameHistory: state.gameHistory,
+      };
     // game state change
     case "RESET_GAME":
       return {
@@ -248,7 +252,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
       ...validatedConfig,
     };
 
-    console.warn("Calling preloadAllSoundPacks() from GameProvider ");
     preloadAllSoundPacks()
       .then(() => {
         console.log("All sound themes have been processed for preloading.");
