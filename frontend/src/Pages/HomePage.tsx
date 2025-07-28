@@ -17,6 +17,7 @@ const HomePage = () => {
     state.layoutType,
     state.timerDuration,
   ]);
+
   return (
     <div className="w-full max-w-4xl mx-auto">
       {/* config */}
