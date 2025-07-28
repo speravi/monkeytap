@@ -161,7 +161,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "CLEAR_GAME_HISTORY":
       return { ...state, gameHistory: [] };
-
     // config change
     case "SET_GRID_SIZE":
       return { ...state, gridSize: action.payload };
