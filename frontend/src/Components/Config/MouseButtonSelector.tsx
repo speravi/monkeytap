@@ -16,7 +16,7 @@ const MouseButtonSelector = () => {
         <button
           key={option}
           onClick={() => handleSelect(option)}
-          className={`px-4 py-1 rounded-md transition-colors text-sm ${
+          className={`px-4 py-1 rounded-md transition-colors text-sm hover:text-text${
             state.allowedMouseButton === option
               ? " text-active"
               : " text-inactive"

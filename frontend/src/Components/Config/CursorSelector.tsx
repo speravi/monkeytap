@@ -167,17 +167,19 @@ const CursorSelector = () => {
             onMouseEnter={() => handleCursorHover(id)}
             onMouseLeave={handleCursorLeave}
             className={`
-            text-inactive
-            px-4 py-2 rounded-lg
-            transition-all duration-200
-            flex items-center gap-2
-            hover:scale-105 w-full
-            outline outline-0
-             ${
-               activeCursor === id ? `outline-2 outline-active text-active` : ""
-             }
-             ${id !== "default" ? "cursor-none" : ""}
-          `}
+              px-4 py-2 rounded-lg
+              transition-all duration-200
+              flex items-center gap-2
+              hover:scale-105 w-full
+              hover:text-text
+              outline outline-0
+              ${
+                activeCursor === id
+                  ? "outline-2 outline-active text-active"
+                  : "text-inactive"
+              }
+              ${id !== "default" ? "cursor-none" : ""}
+            `}
           >
             <span>{name}</span>
             {previewSvg && (
